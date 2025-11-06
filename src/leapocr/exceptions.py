@@ -4,28 +4,28 @@ LeapOCR Python SDK - Custom Exceptions
 This module defines custom exception classes for the LeapOCR SDK.
 """
 
-from typing import Optional, Dict, Any
+from typing import Any
 
 
 class LeapOCRClientError(Exception):
     """Base exception for all LeapOCR client errors."""
-    
+
     def __init__(
         self,
         message: str,
-        error_type: Optional[str] = None,
-        status_code: Optional[int] = None,
-        response_body: Optional[Dict[str, Any]] = None,
+        error_type: str | None = None,
+        status_code: int | None = None,
+        response_body: dict[str, Any] | None = None,
     ):
         super().__init__(message)
         self.message = message
         self.error_type = error_type or "client_error"
         self.status_code = status_code
         self.response_body = response_body or {}
-    
+
     def __str__(self) -> str:
         return f"LeapOCRClientError: {self.message}"
-    
+
     def is_retryable(self) -> bool:
         """Whether this error can be retried."""
         return False
@@ -33,11 +33,16 @@ class LeapOCRClientError(Exception):
 
 class LeapOCRServerError(LeapOCRClientError):
     """Exception for server-side errors (5xx status codes)."""
-    
-    def __init__(self, message: str, status_code: Optional[int] = None, response_body: Optional[Dict[str, Any]] = None):
+
+    def __init__(
+        self,
+        message: str,
+        status_code: int | None = None,
+        response_body: dict[str, Any] | None = None,
+    ):
         super().__init__(message, "server_error", status_code, response_body)
         self.error_type = "server_error"
-    
+
     def is_retryable(self) -> bool:
         """Server errors are generally retryable."""
         return True
@@ -45,11 +50,16 @@ class LeapOCRServerError(LeapOCRClientError):
 
 class LeapOCRAuthenticationError(LeapOCRClientError):
     """Exception for authentication errors (401, 403 status codes)."""
-    
-    def __init__(self, message: str, status_code: Optional[int] = None, response_body: Optional[Dict[str, Any]] = None):
+
+    def __init__(
+        self,
+        message: str,
+        status_code: int | None = None,
+        response_body: dict[str, Any] | None = None,
+    ):
         super().__init__(message, "authentication_error", status_code, response_body)
         self.error_type = "authentication_error"
-    
+
     def is_retryable(self) -> bool:
         """Authentication errors are not retryable without fixing credentials."""
         return False
@@ -57,11 +67,16 @@ class LeapOCRAuthenticationError(LeapOCRClientError):
 
 class LeapOCRValidationError(LeapOCRClientError):
     """Exception for validation errors (422 status code)."""
-    
-    def __init__(self, message: str, status_code: Optional[int] = None, response_body: Optional[Dict[str, Any]] = None):
+
+    def __init__(
+        self,
+        message: str,
+        status_code: int | None = None,
+        response_body: dict[str, Any] | None = None,
+    ):
         super().__init__(message, "validation_error", status_code, response_body)
         self.error_type = "validation_error"
-    
+
     def is_retryable(self) -> bool:
         """Validation errors are not retryable without fixing the request."""
         return False
@@ -69,11 +84,16 @@ class LeapOCRValidationError(LeapOCRClientError):
 
 class LeapOCRRateLimitError(LeapOCRClientError):
     """Exception for rate limit errors (429 status code)."""
-    
-    def __init__(self, message: str, status_code: Optional[int] = None, response_body: Optional[Dict[str, Any]] = None):
+
+    def __init__(
+        self,
+        message: str,
+        status_code: int | None = None,
+        response_body: dict[str, Any] | None = None,
+    ):
         super().__init__(message, "rate_limit_error", status_code, response_body)
         self.error_type = "rate_limit_error"
-    
+
     def is_retryable(self) -> bool:
         """Rate limit errors are retryable after delay."""
         return True
@@ -81,12 +101,12 @@ class LeapOCRRateLimitError(LeapOCRClientError):
 
 class LeapOCRTimeoutError(LeapOCRClientError):
     """Exception for timeout errors."""
-    
-    def __init__(self, message: str, timeout_seconds: Optional[float] = None):
+
+    def __init__(self, message: str, timeout_seconds: float | None = None):
         super().__init__(message, "timeout_error")
         self.timeout_seconds = timeout_seconds
         self.error_type = "timeout_error"
-    
+
     def is_retryable(self) -> bool:
         """Timeout errors are retryable."""
         return True
@@ -94,11 +114,16 @@ class LeapOCRTimeoutError(LeapOCRClientError):
 
 class LeapOCRNotFoundError(LeapOCRClientError):
     """Exception for resource not found errors (404 status code)."""
-    
-    def __init__(self, message: str, status_code: Optional[int] = None, response_body: Optional[Dict[str, Any]] = None):
+
+    def __init__(
+        self,
+        message: str,
+        status_code: int | None = None,
+        response_body: dict[str, Any] | None = None,
+    ):
         super().__init__(message, "not_found_error", status_code, response_body)
         self.error_type = "not_found_error"
-    
+
     def is_retryable(self) -> bool:
         """Not found errors are not retryable."""
         return False
@@ -106,12 +131,12 @@ class LeapOCRNotFoundError(LeapOCRClientError):
 
 class LeapOCRUploadError(LeapOCRClientError):
     """Exception for file upload errors."""
-    
-    def __init__(self, message: str, file_name: Optional[str] = None):
+
+    def __init__(self, message: str, file_name: str | None = None):
         super().__init__(message, "upload_error")
         self.file_name = file_name
         self.error_type = "upload_error"
-    
+
     def is_retryable(self) -> bool:
         """Upload errors may be retryable depending on the cause."""
         return True
@@ -119,13 +144,15 @@ class LeapOCRUploadError(LeapOCRClientError):
 
 class LeapOCRJobError(LeapOCRClientError):
     """Exception for job processing errors."""
-    
-    def __init__(self, message: str, job_id: Optional[str] = None, job_status: Optional[str] = None):
+
+    def __init__(
+        self, message: str, job_id: str | None = None, job_status: str | None = None
+    ):
         super().__init__(message, "job_error")
         self.job_id = job_id
         self.job_status = job_status
         self.error_type = "job_error"
-    
+
     def is_retryable(self) -> bool:
         """Job errors are generally not retryable for the same job."""
         return False
@@ -133,12 +160,12 @@ class LeapOCRJobError(LeapOCRClientError):
 
 class LeapOCRConfigurationError(LeapOCRClientError):
     """Exception for configuration errors."""
-    
-    def __init__(self, message: str, config_key: Optional[str] = None):
+
+    def __init__(self, message: str, config_key: str | None = None):
         super().__init__(message, "configuration_error")
         self.config_key = config_key
         self.error_type = "configuration_error"
-    
+
     def is_retryable(self) -> bool:
         """Configuration errors are not retryable without fixing the configuration."""
         return False
@@ -146,22 +173,22 @@ class LeapOCRConfigurationError(LeapOCRClientError):
 
 class LeapOCRExceptionMapper:
     """Maps generated API exceptions to custom exceptions."""
-    
+
     @staticmethod
     def map_exception(error: Exception) -> LeapOCRClientError:
         """
         Map a generated API exception to a custom exception.
-        
+
         Args:
             error: The original exception
-            
+
         Returns:
             Mapped custom exception
         """
         # Try to get status code from ApiException
-        status_code = getattr(error, 'status', None)
-        body = getattr(error, 'body', {})
-        
+        status_code = getattr(error, "status", None)
+        body = getattr(error, "body", {})
+
         if status_code:
             if status_code == 401:
                 return LeapOCRAuthenticationError(
@@ -199,6 +226,6 @@ class LeapOCRExceptionMapper:
                     status_code=status_code,
                     response_body=body,
                 )
-        
+
         # Default to generic client error
         return LeapOCRClientError(str(error))

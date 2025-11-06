@@ -4,14 +4,15 @@ LeapOCR Python SDK - Types and Enums
 This module defines custom types and enums used throughout the SDK.
 """
 
-from enum import Enum
-from typing import Optional, Dict, Any, List, Union
-from datetime import datetime
 from dataclasses import dataclass
+from datetime import datetime
+from enum import Enum
+from typing import Any
 
 
 class ProcessFormat(str, Enum):
     """Processing format options."""
+
     STRUCTURED = "structured"
     TEXT = "text"
     TABLES = "tables"
@@ -20,6 +21,7 @@ class ProcessFormat(str, Enum):
 
 class ProcessTier(str, Enum):
     """Processing tier options."""
+
     CORE = "core"
     PREMIUM = "premium"
     ENTERPRISE = "enterprise"
@@ -27,12 +29,14 @@ class ProcessTier(str, Enum):
 
 class UploadMethod(str, Enum):
     """File upload methods."""
+
     PRESIGNED = "presigned"
     DIRECT = "direct"
 
 
 class JobStatus(str, Enum):
     """Job status values."""
+
     PENDING = "pending"
     PROCESSING = "processing"
     COMPLETED = "completed"
@@ -43,10 +47,11 @@ class JobStatus(str, Enum):
 @dataclass
 class Job:
     """Represents a processing job."""
+
     id: str
-    status: Union[JobStatus, str]
-    created_at: Optional[datetime] = None
-    
+    status: JobStatus | str
+    created_at: datetime | None = None
+
     def __post_init__(self):
         if isinstance(self.status, str):
             try:
@@ -58,13 +63,14 @@ class Job:
 @dataclass
 class JobStatusInfo:
     """Detailed job status information."""
+
     job_id: str
-    status: Union[JobStatus, str]
-    progress: Optional[float] = None
-    error_message: Optional[str] = None
-    created_at: Optional[datetime] = None
-    updated_at: Optional[datetime] = None
-    
+    status: JobStatus | str
+    progress: float | None = None
+    error_message: str | None = None
+    created_at: datetime | None = None
+    updated_at: datetime | None = None
+
     def __post_init__(self):
         if isinstance(self.status, str):
             try:
@@ -76,16 +82,17 @@ class JobStatusInfo:
 @dataclass
 class JobResult:
     """Represents the result of a completed job."""
+
     job_id: str
-    status: Union[JobStatus, str]
-    data: Optional[Dict[str, Any]] = None
-    pages: Optional[List[Dict[str, Any]]] = None
-    credits_used: Optional[int] = None
-    processing_time: Optional[float] = None
-    error_message: Optional[str] = None
-    created_at: Optional[datetime] = None
-    completed_at: Optional[datetime] = None
-    
+    status: JobStatus | str
+    data: dict[str, Any] | None = None
+    pages: list[dict[str, Any]] | None = None
+    credits_used: int | None = None
+    processing_time: float | None = None
+    error_message: str | None = None
+    created_at: datetime | None = None
+    completed_at: datetime | None = None
+
     def __post_init__(self):
         if isinstance(self.status, str):
             try:
@@ -97,36 +104,40 @@ class JobResult:
 @dataclass
 class FileUploadResult:
     """Represents the result of a file upload operation."""
+
     job_id: str
     upload_url: str
-    headers: Dict[str, str]
+    headers: dict[str, str]
     status: str = "uploaded"
-    file_name: Optional[str] = None
-    file_size: Optional[int] = None
-    content_type: Optional[str] = None
+    file_name: str | None = None
+    file_size: int | None = None
+    content_type: str | None = None
 
 
 @dataclass
 class ClientConfig:
     """Configuration for the LeapOCR client."""
+
     api_key: str
     base_url: str = "https://api.leapocr.com"
     timeout: float = 30.0
     max_retries: int = 3
-    user_agent: Optional[str] = None
+    user_agent: str | None = None
     verify_ssl: bool = True
-    proxy: Optional[Dict[str, str]] = None
-    
+    proxy: dict[str, str] | None = None
+
     def __post_init__(self):
-        self.base_url = self.base_url.rstrip('/')
+        self.base_url = self.base_url.rstrip("/")
         if not self.user_agent:
             import leapocr
+
             self.user_agent = f"leapocr-python/{leapocr.__version__}"
 
 
 @dataclass
 class RetryConfig:
     """Configuration for retry behavior."""
+
     max_retries: int = 3
     base_delay: float = 1.0
     max_delay: float = 60.0
@@ -138,22 +149,23 @@ class RetryConfig:
 @dataclass
 class UploadOptions:
     """Options for file upload."""
-    format: Union[ProcessFormat, str] = ProcessFormat.STRUCTURED
-    tier: Union[ProcessTier, str] = ProcessTier.CORE
-    project_id: Optional[str] = None
-    schema_id: Optional[str] = None
-    instruction_id: Optional[str] = None
-    category_id: Optional[str] = None
-    webhook_url: Optional[str] = None
+
+    format: ProcessFormat | str = ProcessFormat.STRUCTURED
+    tier: ProcessTier | str = ProcessTier.CORE
+    project_id: str | None = None
+    schema_id: str | None = None
+    instruction_id: str | None = None
+    category_id: str | None = None
+    webhook_url: str | None = None
     method: UploadMethod = UploadMethod.PRESIGNED
-    
+
     def __post_init__(self):
         if isinstance(self.format, str):
             try:
                 self.format = ProcessFormat(self.format.lower())
             except ValueError:
                 pass  # Keep as string if not a valid enum value
-        
+
         if isinstance(self.tier, str):
             try:
                 self.tier = ProcessTier(self.tier.lower())
@@ -164,23 +176,24 @@ class UploadOptions:
 @dataclass
 class ProcessOptions:
     """Options for document processing."""
-    format: Union[ProcessFormat, str] = ProcessFormat.STRUCTURED
-    tier: Union[ProcessTier, str] = ProcessTier.CORE
-    project_id: Optional[str] = None
-    schema_id: Optional[str] = None
-    instruction_id: Optional[str] = None
-    category_id: Optional[str] = None
-    webhook_url: Optional[str] = None
-    timeout: Optional[float] = None
+
+    format: ProcessFormat | str = ProcessFormat.STRUCTURED
+    tier: ProcessTier | str = ProcessTier.CORE
+    project_id: str | None = None
+    schema_id: str | None = None
+    instruction_id: str | None = None
+    category_id: str | None = None
+    webhook_url: str | None = None
+    timeout: float | None = None
     poll_interval: float = 2.0
-    
+
     def __post_init__(self):
         if isinstance(self.format, str):
             try:
                 self.format = ProcessFormat(self.format.lower())
             except ValueError:
                 pass  # Keep as string if not a valid enum value
-        
+
         if isinstance(self.tier, str):
             try:
                 self.tier = ProcessTier(self.tier.lower())
@@ -191,36 +204,39 @@ class ProcessOptions:
 @dataclass
 class PageResult:
     """Represents extraction results for a single page."""
+
     page_number: int
-    data: Optional[Dict[str, Any]] = None
-    text: Optional[str] = None
-    tables: Optional[List[Dict[str, Any]]] = None
-    confidence: Optional[float] = None
-    processing_time: Optional[float] = None
+    data: dict[str, Any] | None = None
+    text: str | None = None
+    tables: list[dict[str, Any]] | None = None
+    confidence: float | None = None
+    processing_time: float | None = None
 
 
 @dataclass
 class AnalyticsData:
     """Represents analytics data."""
+
     total_jobs: int
     completed_jobs: int
     failed_jobs: int
     total_credits_used: int
     average_processing_time: float
     success_rate: float
-    jobs_by_status: Dict[str, int]
-    credits_by_project: Dict[str, int]
-    timeline_data: List[Dict[str, Any]]
+    jobs_by_status: dict[str, int]
+    credits_by_project: dict[str, int]
+    timeline_data: list[dict[str, Any]]
 
 
 @dataclass
 class CreditUsage:
     """Represents credit usage information."""
+
     available: int
     used: int
     total: int
-    reset_date: Optional[datetime] = None
-    usage_history: List[Dict[str, Any]] = None
+    reset_date: datetime | None = None
+    usage_history: list[dict[str, Any]] = None
 
 
 # Type aliases for better readability

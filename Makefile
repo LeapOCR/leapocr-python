@@ -43,9 +43,8 @@ lint: ## Run linter and type checker
 	$(UV) run ruff check src/ tests/ examples/
 	$(UV) run mypy src/
 
-format: ## Format code with black and ruff
-	$(UV) run black src/ tests/ examples/
-	$(UV) run ruff check --fix src/ tests/ examples/
+format: ## Format code with ruff
+	$(UV) run ruff format
 
 # Code Generation
 generate: ## Generate Python client from OpenAPI spec
