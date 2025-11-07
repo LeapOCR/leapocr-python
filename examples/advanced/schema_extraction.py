@@ -141,9 +141,11 @@ async def main():
                         print(f"\nLine Items ({len(line_items)}):")
                         for i, item in enumerate(line_items, 1):
                             print(f"  {i}. {item.get('description', 'N/A')}")
-                            print(f"     Qty: {item.get('quantity', 0)} × "
-                                  f"${item.get('unit_price', 0):.2f} = "
-                                  f"${item.get('total', 0):.2f}")
+                            print(
+                                f"     Qty: {item.get('quantity', 0)} × "
+                                f"${item.get('unit_price', 0):.2f} = "
+                                f"${item.get('total', 0):.2f}"
+                            )
 
                     # Show full JSON
                     print("\nFull extracted data (JSON):")

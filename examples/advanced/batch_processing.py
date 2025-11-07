@@ -29,7 +29,9 @@ async def process_document(
             poll_options=PollOptions(poll_interval=2.0, max_wait=180.0),
         )
 
-        print(f"[{document_id}] ✓ Completed - {len(result.pages)} pages, {result.credits_used} credits")
+        print(
+            f"[{document_id}] ✓ Completed - {len(result.pages)} pages, {result.credits_used} credits"
+        )
         return document_id, result, None
 
     except Exception as error:

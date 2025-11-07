@@ -53,8 +53,10 @@ async def main():
 
         # Define progress callback
         def progress_callback(status):
-            print(f"  Progress: {status.progress:.1f}% - "
-                  f"Processed {status.processed_pages}/{status.total_pages} pages")
+            print(
+                f"  Progress: {status.progress:.1f}% - "
+                f"Processed {status.processed_pages}/{status.total_pages} pages"
+            )
 
         # Custom polling options with progress tracking
         poll_options = PollOptions(

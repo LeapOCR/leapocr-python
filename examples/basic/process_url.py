@@ -54,7 +54,9 @@ async def main():
             status = await client.ocr.get_job_status(result.job_id)
 
             status_indicator = "⏳" if status.status == JobStatusType.PROCESSING else "📝"
-            print(f"{status_indicator} Status: {status.status.value} - Progress: {status.progress:.1f}%")
+            print(
+                f"{status_indicator} Status: {status.status.value} - Progress: {status.progress:.1f}%"
+            )
 
             if status.status == JobStatusType.COMPLETED:
                 # Get final results

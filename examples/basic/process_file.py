@@ -59,7 +59,9 @@ async def main():
         # Print first page text (truncated)
         if result.pages:
             first_page = result.pages[0]
-            text_preview = first_page.text[:200] + "..." if len(first_page.text) > 200 else first_page.text
+            text_preview = (
+                first_page.text[:200] + "..." if len(first_page.text) > 200 else first_page.text
+            )
             print(f"\nFirst page text preview:\n{text_preview}")
 
             if first_page.metadata.processing_ms:
