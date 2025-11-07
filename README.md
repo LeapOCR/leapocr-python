@@ -68,9 +68,9 @@ asyncio.run(main())
 
 ## Processing Models
 
-| Model               | Use Case                           | Credits/Page | Priority |
-| ------------------- | ---------------------------------- | ------------ | -------- |
-| `Model.STANDARD_V1` | General purpose (default)          | 1            | 1        |
+| Model               | Use Case                  | Credits/Page | Priority |
+| ------------------- | ------------------------- | ------------ | -------- |
+| `Model.STANDARD_V1` | General purpose (default) | 1            | 1        |
 
 Use the `model` parameter in `ProcessOptions` to specify a model. Defaults to `Model.STANDARD_V1`.
 
@@ -164,11 +164,11 @@ asyncio.run(extract_with_schema())
 
 ### Output Formats
 
-| Format                          | Description        | Use Case                                       |
-| ------------------------------- | ------------------ | ---------------------------------------------- |
-| `Format.STRUCTURED`             | Single JSON object | Extract specific fields across entire document |
-| `Format.MARKDOWN`               | Text per page      | Convert document to readable text              |
-| `Format.PER_PAGE_STRUCTURED`    | JSON per page      | Extract fields from multi-section documents    |
+| Format                       | Description        | Use Case                                       |
+| ---------------------------- | ------------------ | ---------------------------------------------- |
+| `Format.STRUCTURED`          | Single JSON object | Extract specific fields across entire document |
+| `Format.MARKDOWN`            | Text per page      | Convert document to readable text              |
+| `Format.PER_PAGE_STRUCTURED` | JSON per page      | Extract fields from multi-section documents    |
 
 ### Manual Job Management
 
