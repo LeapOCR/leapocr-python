@@ -53,11 +53,11 @@ class ValidationError(LeapOCRError):
     def __init__(
         self,
         message: str,
-        fields: Optional[dict[str, list[str]]] = None,
+        field: Optional[str] = None,
         **kwargs: Any,
     ) -> None:
         super().__init__(message, code="validation_error", status_code=400, **kwargs)
-        self.fields = fields or {}
+        self.field = field
 
 
 class FileError(LeapOCRError):
@@ -82,9 +82,10 @@ class JobError(LeapOCRError):
         self,
         message: str,
         job_id: str,
+        code: Optional[str] = None,
         **kwargs: Any,
     ) -> None:
-        super().__init__(message, code="job_error", **kwargs)
+        super().__init__(message, code=code or "job_error", **kwargs)
         self.job_id = job_id
 
 
@@ -145,6 +146,10 @@ class InsufficientCreditsError(LeapOCRError):
     def __init__(
         self,
         message: str = "Insufficient credits to process this request",
+        credits_available: Optional[int] = None,
+        credits_required: Optional[int] = None,
         **kwargs: Any,
     ) -> None:
         super().__init__(message, code="insufficient_credits", status_code=402, **kwargs)
+        self.credits_available = credits_available
+        self.credits_required = credits_required

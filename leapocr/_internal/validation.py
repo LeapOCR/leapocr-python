@@ -10,6 +10,9 @@ from ..errors import FileError
 # Maximum file size: 100MB
 MAX_FILE_SIZE = 100 * 1024 * 1024
 
+# Maximum instructions length
+MAX_INSTRUCTIONS_LENGTH = 10000
+
 # Supported file extensions
 SUPPORTED_EXTENSIONS = {
     ".pdf",
@@ -145,3 +148,25 @@ def guess_content_type(filename: str) -> str:
         ".tif": "image/tiff",
     }
     return content_types.get(ext, "application/octet-stream")
+
+
+def validate_instructions(instructions: str) -> ValidationResult:
+    """Validate processing instructions.
+
+    Args:
+        instructions: Instructions text to validate
+
+    Returns:
+        ValidationResult with validation status
+    """
+    if not instructions:
+        return ValidationResult(valid=True)
+
+    if len(instructions) > MAX_INSTRUCTIONS_LENGTH:
+        return ValidationResult(
+            valid=False,
+            error=f"Instructions too long ({len(instructions)} characters). "
+            f"Maximum allowed is {MAX_INSTRUCTIONS_LENGTH} characters.",
+        )
+
+    return ValidationResult(valid=True)
