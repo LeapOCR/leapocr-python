@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.1.0] - 2025-01-08
+## [0.0.1] - 2025-11-08
 
 ### Added
 - Initial release of LeapOCR Python SDK
@@ -53,5 +53,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Error handling strategies
 - Timeout handling
 
-[Unreleased]: https://github.com/leapocr/leapocr-python/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/leapocr/leapocr-python/releases/tag/v0.1.0
+[Unreleased]: https://github.com/leapocr/leapocr-python/compare/v0.0.1...HEAD
+[0.0.1]: https://github.com/leapocr/leapocr-python/releases/tag/v0.0.1
