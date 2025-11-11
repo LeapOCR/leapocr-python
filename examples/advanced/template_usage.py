@@ -19,14 +19,15 @@ async def main():
     async with LeapOCR(api_key) as client:
         # Example 1: Use a template by slug
         print("Processing with invoice template...")
-        result = await client.ocr.process_and_wait(
+        job = await client.ocr.process_url(
             "https://example.com/invoice.pdf",
             options=ProcessOptions(
                 template_slug="invoice-extraction",  # Reference existing template
             ),
         )
+        result = await client.ocr.wait_until_done(job.job_id)
 
-        print(f"✓ Processed using template: {result.template_name}")
+        print("✓ Processed using template")
         print(f"  Job ID: {result.job_id}")
         print(f"  Pages processed: {result.processed_pages}")
         print(f"  Credits used: {result.credits_used}")
@@ -41,14 +42,18 @@ async def main():
             "https://example.com/invoice3.pdf",
         ]
 
-        tasks = [
-            client.ocr.process_and_wait(
-                url, options=ProcessOptions(template_slug="invoice-extraction")
-            )
-            for url in files
-        ]
+        # Submit all jobs
+        jobs = await asyncio.gather(
+            *[
+                client.ocr.process_url(
+                    url, options=ProcessOptions(template_slug="invoice-extraction")
+                )
+                for url in files
+            ]
+        )
 
-        results = await asyncio.gather(*tasks)
+        # Wait for all to complete
+        results = await asyncio.gather(*[client.ocr.wait_until_done(job.job_id) for job in jobs])
 
         print(f"✓ Processed {len(results)} documents")
         total_credits = sum(r.credits_used for r in results)
@@ -58,18 +63,20 @@ async def main():
         # Example 3: Use different templates for different document types
         print("Processing different document types...")
 
-        contracts_result = await client.ocr.process_and_wait(
+        contracts_job = await client.ocr.process_file(
             "contract.pdf",
             options=ProcessOptions(template_slug="contract-analysis"),
         )
+        await client.ocr.wait_until_done(contracts_job.job_id)
 
-        receipts_result = await client.ocr.process_and_wait(
+        receipts_job = await client.ocr.process_file(
             "receipt.pdf",
             options=ProcessOptions(template_slug="receipt-extraction"),
         )
+        await client.ocr.wait_until_done(receipts_job.job_id)
 
-        print(f"✓ Contract processed with: {contracts_result.template_name}")
-        print(f"✓ Receipt processed with: {receipts_result.template_name}")
+        print("✓ Contract processed")
+        print("✓ Receipt processed")
 
 
 if __name__ == "__main__":

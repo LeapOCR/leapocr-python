@@ -1,9 +1,11 @@
 """Data models and enums for LeapOCR SDK."""
 
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-from typing import Any, Callable, Optional
+from typing import Any, Callable
 
 
 class Format(str, Enum):
@@ -15,10 +17,15 @@ class Format(str, Enum):
 
 
 class Model(str, Enum):
-    """OCR model types."""
+    """OCR model types.
+
+    Predefined models available in LeapOCR. You can also use custom model strings
+    by passing them directly to the model parameter in ProcessOptions.
+    """
 
     STANDARD_V1 = "standard-v1"
-    # Additional models will be fetched from API
+    ENGLISH_PRO_V1 = "english-pro-v1"
+    PRO_V1 = "pro-v1"
 
 
 class JobStatusType(str, Enum):
@@ -34,13 +41,22 @@ class JobStatusType(str, Enum):
 
 @dataclass
 class ProcessOptions:
-    """Options for OCR processing."""
+    """Options for OCR processing.
+
+    Args:
+        format: Output format (structured, markdown, or per-page structured)
+        model: OCR model to use (Model enum or custom string)
+        schema: JSON schema for structured extraction
+        instructions: Natural language instructions for extraction
+        template_slug: Slug of pre-configured template to use
+        metadata: Additional metadata to attach to the job
+    """
 
     format: Format = Format.STRUCTURED
-    model: Optional[Model] = None
-    schema: Optional[dict[str, Any]] = None
-    instructions: Optional[str] = None
-    template_slug: Optional[str] = None
+    model: Model | str | None = None
+    schema: dict[str, Any] | None = None
+    instructions: str | None = None
+    template_slug: str | None = None
     metadata: dict[str, str] = field(default_factory=dict)
 
 
@@ -50,7 +66,7 @@ class PollOptions:
 
     poll_interval: float = 2.0  # seconds
     max_wait: float = 300.0  # seconds (5 minutes)
-    on_progress: Optional[Callable[["JobStatus"], None]] = None
+    on_progress: Callable[[JobStatus], None] | None = None
 
 
 @dataclass
@@ -72,7 +88,7 @@ class ProcessResult:
     job_id: str
     status: JobStatusType
     created_at: datetime
-    estimated_completion: Optional[datetime] = None
+    estimated_completion: datetime | None = None
 
 
 @dataclass
@@ -86,15 +102,15 @@ class JobStatus:
     progress: float  # 0-100
     created_at: datetime
     updated_at: datetime
-    error_message: Optional[str] = None
+    error_message: str | None = None
 
 
 @dataclass
 class PageMetadata:
     """Metadata for a single page."""
 
-    processing_ms: Optional[int] = None
-    retry_count: Optional[int] = None
+    processing_ms: int | None = None
+    retry_count: int | None = None
     extra: dict[str, Any] = field(default_factory=dict)
 
 
@@ -106,7 +122,7 @@ class PageResult:
     text: str
     metadata: PageMetadata
     processed_at: datetime
-    id: Optional[str] = None
+    id: str | None = None
 
 
 @dataclass
@@ -134,7 +150,7 @@ class JobResult:
     model: str
     result_format: str
     completed_at: datetime
-    pagination: Optional[PaginationInfo] = None
+    pagination: PaginationInfo | None = None
 
 
 @dataclass

@@ -40,9 +40,20 @@ class TestModelEnum:
 
     def test_model_values(self):
         assert Model.STANDARD_V1.value == "standard-v1"
+        assert Model.ENGLISH_PRO_V1.value == "english-pro-v1"
+        assert Model.PRO_V1.value == "pro-v1"
 
     def test_model_comparison(self):
         assert Model.STANDARD_V1 == Model.STANDARD_V1
+        assert Model.ENGLISH_PRO_V1 == Model.ENGLISH_PRO_V1
+        assert Model.PRO_V1 == Model.PRO_V1
+        assert Model.STANDARD_V1 != Model.PRO_V1
+
+    def test_all_models_defined(self):
+        """Ensure all expected models exist."""
+        expected = ["standard-v1", "english-pro-v1", "pro-v1"]
+        actual = [m.value for m in Model]
+        assert set(expected) == set(actual)
 
 
 class TestJobStatusType:
@@ -50,6 +61,7 @@ class TestJobStatusType:
 
     def test_status_values(self):
         assert JobStatusType.PENDING.value == "pending"
+        assert JobStatusType.UPLOADING.value == "uploading"
         assert JobStatusType.PROCESSING.value == "processing"
         assert JobStatusType.COMPLETED.value == "completed"
         assert JobStatusType.PARTIALLY_DONE.value == "partially_done"
@@ -57,7 +69,7 @@ class TestJobStatusType:
 
     def test_all_statuses_defined(self):
         """Ensure all expected status types exist."""
-        expected = ["pending", "processing", "completed", "partially_done", "failed"]
+        expected = ["pending", "uploading", "processing", "completed", "partially_done", "failed"]
         actual = [s.value for s in JobStatusType]
         assert set(expected) == set(actual)
 
@@ -71,7 +83,7 @@ class TestProcessOptions:
         assert opts.model is None
         assert opts.schema is None
         assert opts.instructions is None
-        assert opts.template_id is None
+        assert opts.template_slug is None
         assert opts.metadata == {}
 
     def test_custom_options(self):
@@ -83,7 +95,7 @@ class TestProcessOptions:
             model=Model.STANDARD_V1,
             schema=schema,
             instructions="Extract all text",
-            template_id="template-123",
+            template_slug="invoice-extraction",
             metadata=metadata,
         )
 
@@ -91,7 +103,7 @@ class TestProcessOptions:
         assert opts.model == Model.STANDARD_V1
         assert opts.schema == schema
         assert opts.instructions == "Extract all text"
-        assert opts.template_id == "template-123"
+        assert opts.template_slug == "invoice-extraction"
         assert opts.metadata == metadata
 
     def test_metadata_default_factory(self):
@@ -104,6 +116,18 @@ class TestProcessOptions:
 
         assert opts1.metadata["key"] == "value1"
         assert opts2.metadata["key"] == "value2"
+
+    def test_custom_model_string(self):
+        """Test that ProcessOptions accepts custom model strings."""
+        opts = ProcessOptions(model="my-custom-model-v1")
+        assert opts.model == "my-custom-model-v1"
+        assert isinstance(opts.model, str)
+
+    def test_model_enum_value(self):
+        """Test that ProcessOptions works with Model enum."""
+        opts = ProcessOptions(model=Model.PRO_V1)
+        assert opts.model == Model.PRO_V1
+        assert opts.model.value == "pro-v1"
 
 
 class TestPollOptions:

@@ -37,9 +37,9 @@ async def main():
 
     # Create LeapOCR client
     async with LeapOCR(api_key) as client:
-        # Process the file with options
-        print("\nStarting OCR processing...")
-        result = await client.ocr.process_and_wait(
+        # Submit the file for processing
+        print("\nSubmitting file for OCR processing...")
+        job = await client.ocr.process_file(
             sample_file,
             options=ProcessOptions(
                 format=Format.STRUCTURED,
@@ -47,6 +47,12 @@ async def main():
                 instructions="Extract all text and identify key information",
             ),
         )
+
+        print(f"Job created: {job.job_id}")
+        print("Waiting for processing to complete...")
+
+        # Wait for completion
+        result = await client.ocr.wait_until_done(job.job_id)
 
         # Print results
         print("\n✓ Processing completed successfully!")

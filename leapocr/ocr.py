@@ -1,5 +1,7 @@
 """OCR service for document processing operations."""
 
+from __future__ import annotations
+
 from pathlib import Path
 from typing import Any, BinaryIO
 
@@ -16,6 +18,7 @@ from .models import (
     JobResult,
     JobStatus,
     JobStatusType,
+    Model,
     PageMetadata,
     PageResult,
     PaginationInfo,
@@ -106,7 +109,9 @@ class OCRService:
         }
 
         if options.model:
-            payload["model"] = options.model.value
+            payload["model"] = (
+                options.model.value if isinstance(options.model, Model) else options.model
+            )
         if options.schema:
             payload["schema"] = options.schema
         if options.instructions:
@@ -184,7 +189,7 @@ class OCRService:
         """
 
         async def _make_request() -> httpx.Response:
-            return await self._client.delete(f"/ocr/delete/{job_id}", json={})
+            return await self._client.delete(f"/ocr/delete/{job_id}")
 
         response = await with_retry(
             _make_request,
@@ -270,20 +275,20 @@ class OCRService:
             pagination=pagination,
         )
 
-    async def process_and_wait(
+    async def wait_until_done(
         self,
-        file: str | Path | BinaryIO,
-        options: ProcessOptions | None = None,
+        job_id: str,
         poll_options: PollOptions | None = None,
     ) -> JobResult:
-        """Process file and wait for completion.
+        """Wait for a job to complete and return results.
 
-        This is a convenience method that combines process_file() and polling.
+        This method polls the job status until completion, then retrieves results.
+        Use this after calling process_file() or process_url() for explicit
+        control over job submission vs. waiting.
 
         Args:
-            file: File path or file-like object
-            options: Processing options
-            poll_options: Polling configuration
+            job_id: Job ID to wait for
+            poll_options: Polling configuration (interval, max_wait, callbacks)
 
         Returns:
             JobResult when processing completes
@@ -292,15 +297,9 @@ class OCRService:
             JobTimeoutError: If processing doesn't complete in time
             JobFailedError: If processing fails
         """
-        # Submit job
-        result = await self.process_file(file, options)
-
-        # Poll until done
         poll_opts = poll_options or PollOptions()
-        await poll_until_done(self.get_job_status, result.job_id, poll_opts)
-
-        # Get final results
-        return await self.get_results(result.job_id)
+        await poll_until_done(self.get_job_status, job_id, poll_opts)
+        return await self.get_results(job_id)
 
     async def _upload_file(
         self, file: BinaryIO, file_name: str, file_size: int, options: ProcessOptions
@@ -331,7 +330,9 @@ class OCRService:
 
         # Add optional fields
         if options.model:
-            initiate_payload["model"] = options.model.value
+            initiate_payload["model"] = (
+                options.model.value if isinstance(options.model, Model) else options.model
+            )
         if options.schema:
             initiate_payload["schema"] = options.schema
         if options.instructions:

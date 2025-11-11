@@ -132,19 +132,26 @@ async def test_process_file_direct_upload():
 
 @pytest.mark.integration
 @pytest.mark.asyncio
-async def test_process_and_wait():
-    """Test convenience method that processes and waits for completion."""
+async def test_wait_until_done():
+    """Test wait_until_done method that polls and waits for completion."""
     test_file = find_test_pdf()
     if not test_file:
         pytest.skip("No test PDF file found")
 
     async with create_test_client() as client:
-        print(f"\nProcessing file with process_and_wait: {test_file.name}")
+        print(f"\nProcessing file with wait_until_done: {test_file.name}")
 
-        # This method combines process_file + polling + get_results
-        result = await client.ocr.process_and_wait(
+        # Submit job
+        job = await client.ocr.process_file(
             test_file,
             options=ProcessOptions(format=Format.MARKDOWN),
+        )
+
+        print(f"Job created: {job.job_id}")
+
+        # Wait for completion
+        result = await client.ocr.wait_until_done(
+            job.job_id,
             poll_options=PollOptions(poll_interval=2.0, max_wait=180.0),
         )
 
@@ -276,17 +283,20 @@ async def test_custom_poll_options():
         print(f"Progress update: {status.progress:.1f}% ({status.status.value})")
 
     async with create_test_client() as client:
+        # Submit job
+        job = await client.ocr.process_file(
+            test_file,
+            options=ProcessOptions(format=Format.STRUCTURED),
+        )
+
+        # Wait with custom options
         poll_opts = PollOptions(
             poll_interval=1.0,  # Poll every second
             max_wait=60.0,  # Wait up to 1 minute
             on_progress=progress_callback,
         )
 
-        result = await client.ocr.process_and_wait(
-            test_file,
-            options=ProcessOptions(format=Format.STRUCTURED),
-            poll_options=poll_opts,
-        )
+        result = await client.ocr.wait_until_done(job.job_id, poll_options=poll_opts)
 
         assert result.status == JobStatusType.COMPLETED
 
@@ -301,7 +311,8 @@ async def test_pagination():
 
     async with create_test_client() as client:
         # Process file
-        result = await client.ocr.process_and_wait(test_file)
+        job = await client.ocr.process_file(test_file)
+        result = await client.ocr.wait_until_done(job.job_id)
 
         # Get first page of results
         page1 = await client.ocr.get_results(result.job_id, page=1, limit=1)
@@ -330,9 +341,16 @@ async def test_different_formats():
 
         for fmt in formats_to_test:
             print(f"\nTesting format: {fmt.value}")
-            result = await client.ocr.process_and_wait(
+
+            # Submit job
+            job = await client.ocr.process_file(
                 test_file,
                 options=ProcessOptions(format=fmt),
+            )
+
+            # Wait for completion
+            result = await client.ocr.wait_until_done(
+                job.job_id,
                 poll_options=PollOptions(max_wait=120.0),
             )
 
@@ -352,10 +370,15 @@ async def test_delete_job():
     async with create_test_client() as client:
         print(f"\nProcessing file for deletion test: {test_file.name}")
 
-        # Process a file
-        result = await client.ocr.process_and_wait(
+        # Submit job
+        job = await client.ocr.process_file(
             test_file,
             options=ProcessOptions(format=Format.STRUCTURED, model=Model.STANDARD_V1),
+        )
+
+        # Wait for completion
+        result = await client.ocr.wait_until_done(
+            job.job_id,
             poll_options=PollOptions(max_wait=180.0),
         )
 

@@ -6,16 +6,16 @@ Example:
     >>>
     >>> async def main():
     ...     async with LeapOCR("your-api-key") as client:
-    ...         result = await client.ocr.process_and_wait(
-    ...             "document.pdf",
-    ...             options=ProcessOptions(format=Format.MARKDOWN)
-    ...         )
+    ...         # Submit job
+    ...         job = await client.ocr.process_file("document.pdf")
+    ...         # Wait for completion
+    ...         result = await client.ocr.wait_until_done(job.job_id)
     ...         print(f"Processed {result.total_pages} pages")
     >>>
     >>> asyncio.run(main())
 """
 
-__version__ = "0.1.0"
+__version__ = "0.0.2"
 
 # Core client
 from .client import LeapOCR

@@ -126,6 +126,21 @@ Use pre-configured templates for document processing.
 python examples/advanced/template_usage.py
 ```
 
+### `advanced/model_selection.py`
+Compare and use different OCR models including custom models.
+
+**Features demonstrated:**
+- Using predefined models (Standard, English Pro, Pro)
+- Custom organization-specific models
+- Model performance comparison
+- Credit usage per model
+- Concurrent processing with different models
+
+**Usage:**
+```bash
+python examples/advanced/model_selection.py
+```
+
 ### `advanced/job_management.py`
 Advanced job management including status tracking and deletion.
 

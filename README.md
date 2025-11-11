@@ -39,17 +39,25 @@ from leapocr import LeapOCR, ProcessOptions, Format
 async def main():
     # Initialize the SDK with your API key
     async with LeapOCR(os.getenv("LEAPOCR_API_KEY")) as client:
-        # Process a document and wait for completion
-        result = await client.ocr.process_and_wait(
+        # Submit document for processing
+        job = await client.ocr.process_url(
             "https://example.com/document.pdf",
             options=ProcessOptions(
                 format=Format.STRUCTURED,
             ),
         )
 
+        print(f"Job created: {job.job_id}")
+
+        # Wait for processing to complete
+        result = await client.ocr.wait_until_done(job.job_id)
+
         print(f"Credits used: {result.credits_used}")
         print(f"Pages processed: {len(result.pages)}")
         print(f"Extracted text: {result.pages[0].text[:200]}...")
+
+        # Optional: Delete job after processing (auto-deleted after 7 days)
+        await client.ocr.delete_job(job.job_id)
 
 asyncio.run(main())
 ```
@@ -65,14 +73,21 @@ asyncio.run(main())
 - **Context Manager Support** - Proper resource cleanup with async context managers
 - **Direct File Upload** - Efficient multipart uploads for local files
 - **Progress Tracking** - Real-time callbacks for long-running operations
+- **Automatic Cleanup** - Jobs and files are automatically deleted after 7 days, or delete immediately with `delete_job()`
 
 ## Processing Models
 
-| Model               | Use Case                  | Credits/Page | Priority |
-| ------------------- | ------------------------- | ------------ | -------- |
-| `Model.STANDARD_V1` | General purpose (default) | 1            | 1        |
-
 Use the `model` parameter in `ProcessOptions` to specify a model. Defaults to `Model.STANDARD_V1`.
+
+You can also use custom model strings for organization-specific models:
+
+```python
+from leapocr import ProcessOptions
+
+options = ProcessOptions(
+    model="my-custom-model-v1",  # Custom string model
+)
+```
 
 ## Usage Examples
 
@@ -84,18 +99,24 @@ from leapocr import LeapOCR, ProcessOptions, Format, Model
 
 async def process_url():
     async with LeapOCR("your-api-key") as client:
-        result = await client.ocr.process_and_wait(
+        # Submit job
+        job = await client.ocr.process_url(
             "https://example.com/invoice.pdf",
             options=ProcessOptions(
                 format=Format.STRUCTURED,
-                model=Model.STANDARD_V1,
+                model=Model.PRO_V1,  # Use premium model for better accuracy
                 instructions="Extract invoice number, date, and total amount",
             ),
         )
 
+        # Wait for completion
+        result = await client.ocr.wait_until_done(job.job_id)
+
         print(f"Processing time: {result.processing_time_seconds:.2f}s")
         print(f"Credits used: {result.credits_used}")
         print(f"Pages: {len(result.pages)}")
+
+        await client.ocr.delete_job(job.job_id)
 
 asyncio.run(process_url())
 ```
@@ -107,16 +128,22 @@ from pathlib import Path
 
 async def process_file():
     async with LeapOCR("your-api-key") as client:
-        result = await client.ocr.process_and_wait(
+        # Submit file
+        job = await client.ocr.process_file(
             Path("invoice.pdf"),
             options=ProcessOptions(
                 format=Format.STRUCTURED,
-                model=Model.STANDARD_V1,
+                model=Model.ENGLISH_PRO_V1,  # High-accuracy for English documents
             ),
         )
 
+        # Wait for completion
+        result = await client.ocr.wait_until_done(job.job_id)
+
         for page in result.pages:
             print(f"Page {page.page_number}: {len(page.text)} characters")
+
+        await client.ocr.delete_job(job.job_id)
 
 asyncio.run(process_file())
 ```
@@ -144,7 +171,8 @@ async def extract_with_schema():
     }
 
     async with LeapOCR("your-api-key") as client:
-        result = await client.ocr.process_and_wait(
+        # Submit with schema
+        job = await client.ocr.process_file(
             "medical-record.pdf",
             options=ProcessOptions(
                 format=Format.STRUCTURED,
@@ -153,11 +181,16 @@ async def extract_with_schema():
             ),
         )
 
+        # Wait for completion
+        result = await client.ocr.wait_until_done(job.job_id)
+
         # Parse the structured data
         import json
         data = json.loads(result.pages[0].text)
         print(f"Patient: {data['patient_name']}")
         print(f"Medications: {len(data['medications'])}")
+
+        await client.ocr.delete_job(job.job_id)
 
 asyncio.run(extract_with_schema())
 ```
@@ -212,8 +245,12 @@ async def track_progress():
               f"({status.processed_pages}/{status.total_pages} pages)")
 
     async with LeapOCR("your-api-key") as client:
-        result = await client.ocr.process_and_wait(
-            "large-document.pdf",
+        # Submit job
+        job = await client.ocr.process_file("large-document.pdf")
+
+        # Wait with progress tracking
+        result = await client.ocr.wait_until_done(
+            job.job_id,
             poll_options=PollOptions(
                 poll_interval=2.0,
                 max_wait=300.0,
@@ -226,34 +263,64 @@ asyncio.run(track_progress())
 
 ### Using Templates
 
+Use pre-configured templates for common document types. Templates include predefined schemas, instructions, and model settings:
+
 ```python
 async def use_template():
     async with LeapOCR("your-api-key") as client:
         # Use a pre-configured template by its slug
-        result = await client.ocr.process_and_wait(
+        job = await client.ocr.process_file(
             "invoice.pdf",
             options=ProcessOptions(
                 template_slug="invoice-extraction",  # Reference existing template
             ),
         )
 
-        print(f"Processed using template: {result.template_name}")
+        result = await client.ocr.wait_until_done(job.job_id)
         print(f"Extracted data: {result.pages[0].text}")
+
+        await client.ocr.delete_job(job.job_id)
 
 asyncio.run(use_template())
 ```
 
+**Common Template Use Cases:**
+
+- Invoice extraction
+- Receipt processing
+- Medical records
+- Identity documents
+- Custom organizational templates
+
 ### Deleting Jobs
 
-```python
-async def delete_old_job():
-    async with LeapOCR("your-api-key") as client:
-        # Delete a job when no longer needed
-        response = await client.ocr.delete_job("job-id-123")
-        print(f"Job deleted: {response}")
+**Automatic Deletion**: All jobs and their associated files are automatically deleted after **7 days** for security and storage management.
 
-asyncio.run(delete_old_job())
+**Manual Deletion**: Delete jobs immediately after processing to remove sensitive data or free up resources sooner:
+
+```python
+async def delete_after_processing():
+    async with LeapOCR("your-api-key") as client:
+        # Submit and process document
+        job = await client.ocr.process_file("sensitive-doc.pdf")
+        result = await client.ocr.wait_until_done(job.job_id)
+
+        # Use the extracted data
+        print(f"Extracted data: {result.pages[0].text}")
+
+        # Delete job immediately (redacts content and marks as deleted)
+        await client.ocr.delete_job(result.job_id)
+        print("Job deleted successfully")
+
+asyncio.run(delete_after_processing())
 ```
+
+**Best Practices:**
+
+- **Sensitive Data**: Delete jobs containing PII/PHI immediately after use
+- **Compliance**: Manual deletion helps meet data retention requirements
+- **Auto-Cleanup**: All jobs are automatically purged after 7 days regardless
+- **Irreversible**: Deleted jobs cannot be recovered
 
 ### Concurrent Batch Processing
 
@@ -266,12 +333,17 @@ async def batch_process():
     ]
 
     async with LeapOCR("your-api-key") as client:
-        # Process all documents concurrently
-        tasks = [
-            client.ocr.process_and_wait(url)
+        # Submit all documents concurrently
+        jobs = await asyncio.gather(*[
+            client.ocr.process_url(url)
             for url in urls
-        ]
-        results = await asyncio.gather(*tasks)
+        ])
+
+        # Wait for all to complete
+        results = await asyncio.gather(*[
+            client.ocr.wait_until_done(job.job_id)
+            for job in jobs
+        ])
 
         total_credits = sum(r.credits_used for r in results)
         total_pages = sum(len(r.pages) for r in results)
@@ -279,6 +351,11 @@ async def batch_process():
         print(f"Processed {len(results)} documents")
         print(f"Total credits: {total_credits}")
         print(f"Total pages: {total_pages}")
+
+        await asyncio.gather(*[
+            client.ocr.delete_job(job.job_id)
+            for job in jobs
+        ])
 
 asyncio.run(batch_process())
 ```
@@ -395,14 +472,7 @@ class LeapOCR:
 OCR operations service accessible via `client.ocr`.
 
 ```python
-# Process and wait for completion (convenience method)
-async def process_and_wait(
-    file: str | Path | BinaryIO,
-    options: ProcessOptions | None = None,
-    poll_options: PollOptions | None = None,
-) -> JobResult
-
-# Process file or URL
+# Process file or URL (submit job)
 async def process_file(
     file: str | Path | BinaryIO,
     options: ProcessOptions | None = None,
@@ -413,10 +483,16 @@ async def process_url(
     options: ProcessOptions | None = None,
 ) -> ProcessResult
 
+# Wait for job completion
+async def wait_until_done(
+    job_id: str,
+    poll_options: PollOptions | None = None,
+) -> JobResult
+
 # Job management
 async def get_job_status(job_id: str) -> JobStatus
 async def get_results(job_id: str, page: int = 1, limit: int = 100) -> JobResult
-async def delete_job(job_id: str) -> dict[str, Any]  # Delete a job
+async def delete_job(job_id: str) -> dict[str, Any]
 ```
 
 ### Data Models

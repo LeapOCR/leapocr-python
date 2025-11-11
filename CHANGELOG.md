@@ -7,6 +7,55 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.2] - 2025-11-11
+
+### Breaking Changes
+- **Removed `process_and_wait()` method** - Use two-step pattern: `process_file()`/`process_url()` → `wait_until_done()`
+- API now matches Go/JS SDKs for consistency across all language implementations
+
+### Added
+- **New OCR Models**:
+  - `Model.ENGLISH_PRO_V1` - High-accuracy English document processing (2 credits/page)
+  - `Model.PRO_V1` - Premium multilingual document processing (2 credits/page)
+- **Custom Model Support** - `ProcessOptions.model` now accepts custom model strings for organization-specific models
+- **`wait_until_done()` method** - Explicit job waiting with poll options, matching Go/JS SDK patterns
+- New example: `examples/advanced/model_selection.py` demonstrating all models and custom model usage
+
+### Changed
+- **Two-step processing pattern** (BREAKING):
+  - Old: `result = await client.ocr.process_and_wait("doc.pdf")`
+  - New: `job = await client.ocr.process_file("doc.pdf")` → `result = await client.ocr.wait_until_done(job.job_id)`
+- Updated all documentation and examples to use two-step pattern
+- Modernized type hints: `Optional[X]` → `X | None`, `Union[X, Y]` → `X | Y`
+- Enhanced README with model comparison table and custom model examples
+- Improved batch processing examples showing submit-all → wait-all pattern
+
+### Fixed
+- Type annotation compatibility with Python 3.9+ using `from __future__ import annotations`
+
+### Migration Guide
+Users upgrading from v0.0.1 must update code:
+```python
+# Before (v0.0.1)
+result = await client.ocr.process_and_wait(
+    "document.pdf",
+    options=ProcessOptions(format=Format.STRUCTURED)
+)
+
+# After (v0.0.2)
+job = await client.ocr.process_file(
+    "document.pdf",
+    options=ProcessOptions(format=Format.STRUCTURED)
+)
+result = await client.ocr.wait_until_done(job.job_id)
+```
+
+**Benefits of new pattern**:
+- Explicit control over job submission vs. waiting
+- Better concurrent batch processing
+- API parity with Go/JS SDKs
+- Flexibility to check status or delete jobs between steps
+
 ## [0.0.1] - 2025-11-08
 
 ### Added
@@ -53,5 +102,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Error handling strategies
 - Timeout handling
 
-[Unreleased]: https://github.com/leapocr/leapocr-python/compare/v0.0.1...HEAD
+[Unreleased]: https://github.com/leapocr/leapocr-python/compare/v0.0.2...HEAD
+[0.0.2]: https://github.com/leapocr/leapocr-python/compare/v0.0.1...v0.0.2
 [0.0.1]: https://github.com/leapocr/leapocr-python/releases/tag/v0.0.1
