@@ -5,18 +5,49 @@ description = "Official Python SDK for LeapOCR - Transform documents into struct
 readme = "README.md"
 requires-python = ">=3.9"
 authors = [{ name = "LeapOCR", email = "support@leapocr.com" }]
-license = { file = "LICENSE" }
-keywords = ["ocr", "document-processing", "ai", "pdf", "text-extraction"]
+maintainers = [{ name = "LeapOCR", email = "support@leapocr.com" }]
+license = { text = "Apache-2.0" }
+keywords = [
+    "ocr",
+    "optical-character-recognition",
+    "document-processing",
+    "document-extraction",
+    "ai",
+    "artificial-intelligence",
+    "pdf",
+    "text-extraction",
+    "data-extraction",
+    "structured-data",
+    "asyncio",
+    "async",
+    "api-client",
+    "sdk",
+]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: Science/Research",
     "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Software Development :: Libraries",
     "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing",
+    "Topic :: Text Processing :: Markup",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Image Recognition",
+    "Topic :: Office/Business",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Framework :: AsyncIO",
+    "Typing :: Typed",
 ]
 
 dependencies = [
@@ -40,6 +71,7 @@ Homepage = "https://leapocr.com"
 Documentation = "https://docs.leapocr.com"
 Repository = "https://github.com/leapocr/leapocr-python"
 Issues = "https://github.com/leapocr/leapocr-python/issues"
+Logo = "https://raw.githubusercontent.com/leapocr/leapocr-python/main/logo/web-app-manifest-512x512.png"
 
 [build-system]
 requires = ["hatchling"]

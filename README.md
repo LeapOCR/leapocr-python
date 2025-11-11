@@ -1,10 +1,18 @@
 # LeapOCR Python SDK
 
+<div align="center">
+  <img src="https://raw.githubusercontent.com/leapocr/leapocr-python/main/logo/web-app-manifest-512x512.png" alt="LeapOCR Logo" width="200" height="200">
+</div>
+
+<div align="center">
+
 [![PyPI version](https://badge.fury.io/py/leapocr.svg)](https://badge.fury.io/py/leapocr)
 [![Python Support](https://img.shields.io/pypi/pyversions/leapocr.svg)](https://pypi.org/project/leapocr/)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 Official Python SDK for [LeapOCR](https://www.leapocr.com/) - Transform documents into structured data using AI-powered OCR.
+
+</div>
 
 ## Overview
 
