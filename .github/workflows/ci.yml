@@ -25,7 +25,7 @@ jobs:
           enable-cache: true
 
       - name: Install dependencies
-        run: uv sync
+        run: uv sync --extra dev
 
       - name: Run ruff format check
         run: uv run ruff format --check .
@@ -51,7 +51,7 @@ jobs:
           enable-cache: true
 
       - name: Install dependencies
-        run: uv sync
+        run: uv sync --extra dev
 
       - name: Run mypy
         run: uv run mypy leapocr/
@@ -78,7 +78,7 @@ jobs:
           enable-cache: true
 
       - name: Install dependencies
-        run: uv sync
+        run: uv sync --extra dev
 
       - name: Run unit tests only
         run: uv run pytest tests/ -v --tb=short --ignore=tests/integration
