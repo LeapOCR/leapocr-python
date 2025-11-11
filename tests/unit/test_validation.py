@@ -1,7 +1,5 @@
 """Unit tests for validation functions."""
 
-import pytest
-
 from leapocr._internal.validation import (
     MAX_FILE_SIZE,
     MAX_INSTRUCTIONS_LENGTH,

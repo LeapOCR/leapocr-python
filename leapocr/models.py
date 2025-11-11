@@ -25,6 +25,7 @@ class JobStatusType(str, Enum):
     """Job processing status types."""
 
     PENDING = "pending"
+    UPLOADING = "uploading"
     PROCESSING = "processing"
     COMPLETED = "completed"
     PARTIALLY_DONE = "partially_done"
@@ -39,7 +40,7 @@ class ProcessOptions:
     model: Optional[Model] = None
     schema: Optional[dict[str, Any]] = None
     instructions: Optional[str] = None
-    template_id: Optional[str] = None
+    template_slug: Optional[str] = None
     metadata: dict[str, str] = field(default_factory=dict)
 
 

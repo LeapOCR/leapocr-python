@@ -119,6 +119,38 @@ async with LeapOCR("api-key") as client:
     data = result.pages[0].text  # JSON string with extracted data
 ```
 
+## Using Templates
+
+```python
+async with LeapOCR("api-key") as client:
+    # Use a pre-configured template by its slug
+    result = await client.ocr.process_and_wait(
+        "invoice.pdf",
+        options=ProcessOptions(
+            template_slug="invoice-extraction"
+        )
+    )
+
+    print(f"Used template: {result.template_name}")
+    print(f"Result: {result.pages[0].text}")
+```
+
+## Job Management
+
+```python
+async with LeapOCR("api-key") as client:
+    # Start a job
+    job = await client.ocr.process_file("document.pdf")
+
+    # Check status
+    status = await client.ocr.get_job_status(job.job_id)
+    print(f"Status: {status.status}")
+
+    # Delete when done
+    await client.ocr.delete_job(job.job_id)
+    print("Job deleted")
+```
+
 ## Error Handling
 
 ```python

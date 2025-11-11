@@ -111,8 +111,8 @@ class OCRService:
             payload["schema"] = options.schema
         if options.instructions:
             payload["instructions"] = options.instructions
-        if options.template_id:
-            payload["template_id"] = options.template_id
+        if options.template_slug:
+            payload["template_slug"] = options.template_slug
 
         async def _make_request() -> httpx.Response:
             return await self._client.post("/ocr/uploads/url", json=payload)
@@ -160,7 +160,7 @@ class OCRService:
         data = response.json()
 
         return JobStatus(
-            job_id=data["job_id"],
+            job_id=data.get("job_id", data["id"]),  # API returns "id" not "job_id"
             status=JobStatusType(data["status"]),
             processed_pages=data.get("processed_pages", 0),
             total_pages=data.get("total_pages", 0),
@@ -169,6 +169,32 @@ class OCRService:
             updated_at=parse_datetime(data.get("updated_at", data["created_at"])),
             error_message=data.get("error_message"),
         )
+
+    async def delete_job(self, job_id: str) -> dict[str, Any]:
+        """Delete a job.
+
+        Args:
+            job_id: Job ID to delete
+
+        Returns:
+            Dictionary with deletion confirmation
+
+        Raises:
+            APIError: If API request fails
+        """
+
+        async def _make_request() -> httpx.Response:
+            return await self._client.delete(f"/ocr/delete/{job_id}", json={})
+
+        response = await with_retry(
+            _make_request,
+            max_retries=self._config.max_retries,
+            retry_delay=self._config.retry_delay,
+            retry_multiplier=self._config.retry_multiplier,
+        )
+
+        self._check_response(response)
+        return response.json()
 
     async def get_results(self, job_id: str, page: int = 1, limit: int = 100) -> JobResult:
         """Get job results.
@@ -310,8 +336,8 @@ class OCRService:
             initiate_payload["schema"] = options.schema
         if options.instructions:
             initiate_payload["instructions"] = options.instructions
-        if options.template_id:
-            initiate_payload["template_id"] = options.template_id
+        if options.template_slug:
+            initiate_payload["template_slug"] = options.template_slug
 
         async def _initiate() -> httpx.Response:
             return await self._client.post("/ocr/uploads/direct", json=initiate_payload)

@@ -112,6 +112,35 @@ python examples/advanced/custom_config.py
 OCR_BASE_URL="https://api-staging.example.com" python examples/advanced/custom_config.py
 ```
 
+### `advanced/template_usage.py`
+Use pre-configured templates for document processing.
+
+**Features demonstrated:**
+- Using templates by slug
+- Batch processing with templates
+- Multiple template types for different document types
+- Template-based extraction without defining schemas
+
+**Usage:**
+```bash
+python examples/advanced/template_usage.py
+```
+
+### `advanced/job_management.py`
+Advanced job management including status tracking and deletion.
+
+**Features demonstrated:**
+- Manual job submission and status polling
+- Job status monitoring
+- Result retrieval
+- Job deletion when no longer needed
+- Batch job cleanup
+
+**Usage:**
+```bash
+python examples/advanced/job_management.py
+```
+
 ## Error Handling Examples
 
 ### `error_handling/error_types.py`
@@ -205,6 +234,8 @@ result = await client.ocr.process_and_wait(
 6. **Use structured format** with schemas for data extraction
 7. **Process in batches** for multiple documents
 8. **Monitor credits usage** to optimize costs
+9. **Use templates** (`template_slug`) to reuse extraction configurations
+10. **Delete jobs** when no longer needed to clean up resources
 
 ## Troubleshooting
 

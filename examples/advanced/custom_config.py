@@ -12,7 +12,7 @@ Requirements:
 import asyncio
 import os
 
-from leapocr import ClientConfig, Format, LeapOCR, Model, PollOptions, ProcessOptions
+from leapocr import Format, LeapOCR, Model, PollOptions, ProcessOptions
 from leapocr.config import ClientConfig
 
 

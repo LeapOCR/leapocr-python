@@ -15,12 +15,9 @@ import os
 from leapocr import (
     APIError,
     AuthenticationError,
-    FileError,
     JobError,
     LeapOCR,
     LeapOCRError,
-    NetworkError,
-    RateLimitError,
     ValidationError,
 )
 
@@ -113,7 +110,7 @@ async def test_error_inspection(api_key: str):
         try:
             await client.ocr.process_url("https://nonexistent-domain-xyz.com/doc.pdf")
         except LeapOCRError as e:
-            print(f"\n   Error details:")
+            print("\n   Error details:")
             print(f"     Type: {type(e).__name__}")
             print(f"     Message: {e.message}")
             print(f"     Code: {e.code}")

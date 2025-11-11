@@ -25,28 +25,30 @@ from leapocr.config import ClientConfig
 
 
 def find_test_pdf() -> Path | None:
-    """Find a test PDF file in common locations."""
-    # Check environment variable
+    """Find a test PDF file from the ./sample folder."""
+    # Check environment variable first (takes precedence)
     if test_path := os.getenv("TEST_PDF_PATH"):
         test_file = Path(test_path)
         if test_file.exists() and test_file.suffix.lower() == ".pdf":
             return test_file
 
-    # Look for sample directory in repo root
-    current = Path.cwd()
-    for _ in range(5):  # Search up to 5 levels up
-        sample_dir = current / "sample"
-        if sample_dir.exists():
-            # Try common test file names
-            for filename in [
-                "test.pdf",
-                "A129of19_14.01.22.pdf",
-                "A141of21_10.02.22.pdf",
-            ]:
-                test_file = sample_dir / filename
-                if test_file.exists():
-                    return test_file
-        current = current.parent
+    # Find project root by looking for sample directory relative to test file location
+    # Test file is in tests/integration/, so go up 2 levels to project root
+    test_file_dir = Path(__file__).parent
+    project_root = test_file_dir.parent.parent
+    sample_dir = project_root / "sample"
+
+    if not sample_dir.exists():
+        return None
+
+    # Find any PDF file in the sample directory
+    pdf_files = list(sample_dir.glob("*.pdf"))
+    if pdf_files:
+        # Prefer test.pdf if it exists, otherwise return the first one found
+        for pdf_file in pdf_files:
+            if pdf_file.name == "test.pdf":
+                return pdf_file
+        return pdf_files[0]
 
     return None
 
@@ -94,6 +96,23 @@ async def test_process_file_direct_upload():
 
         # Step 2: Wait for completion
         print("Step 3: Waiting for OCR processing...")
+
+        # Poll until complete
+        import asyncio
+
+        max_wait = 180  # 3 minutes
+        poll_interval = 2
+        elapsed = 0
+
+        while elapsed < max_wait:
+            status = await client.ocr.get_job_status(result.job_id)
+            if status.status == JobStatusType.COMPLETED:
+                break
+            elif status.status == JobStatusType.FAILED:
+                pytest.fail(f"Job failed: {status.error_message}")
+            await asyncio.sleep(poll_interval)
+            elapsed += poll_interval
+
         final_result = await client.ocr.get_results(result.job_id)
 
         # Verify results
@@ -163,7 +182,7 @@ async def test_process_url():
         import asyncio
 
         max_attempts = 60  # 2 minutes with 2s intervals
-        for attempt in range(max_attempts):
+        for _ in range(max_attempts):
             status = await client.ocr.get_job_status(result.job_id)
             print(f"Job status: {status.status.value}, Progress: {status.progress:.1f}%")
 
@@ -320,3 +339,48 @@ async def test_different_formats():
             assert result.status == JobStatusType.COMPLETED
             assert result.result_format == fmt.value
             print(f"Format {fmt.value} completed successfully")
+
+
+@pytest.mark.integration
+@pytest.mark.asyncio
+async def test_delete_job():
+    """Test deleting a completed job."""
+    test_file = find_test_pdf()
+    if not test_file:
+        pytest.skip("No test PDF file found")
+
+    async with create_test_client() as client:
+        print(f"\nProcessing file for deletion test: {test_file.name}")
+
+        # Process a file
+        result = await client.ocr.process_and_wait(
+            test_file,
+            options=ProcessOptions(format=Format.STRUCTURED, model=Model.STANDARD_V1),
+            poll_options=PollOptions(max_wait=180.0),
+        )
+
+        assert result.status == JobStatusType.COMPLETED
+        print(f"Job completed: {result.job_id}")
+
+        # Delete the job
+        print(f"Deleting job: {result.job_id}")
+        delete_result = await client.ocr.delete_job(result.job_id)
+        print(f"Job deleted successfully: {delete_result}")
+
+        # Try to delete again - should fail or succeed (depending on API behavior)
+        try:
+            await client.ocr.delete_job(result.job_id)
+            print("Second delete attempt succeeded (idempotent)")
+        except Exception as e:
+            print(f"Second delete attempt returned error (expected): {e}")
+
+
+@pytest.mark.integration
+@pytest.mark.asyncio
+async def test_delete_nonexistent_job():
+    """Test deleting a non-existent job."""
+    async with create_test_client() as client:
+        # Try to delete a non-existent job
+        with pytest.raises(Exception):  # Should raise APIError
+            await client.ocr.delete_job("non-existent-job-id-12345")
+        print("Correctly handled deletion of non-existent job")

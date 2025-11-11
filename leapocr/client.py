@@ -54,7 +54,7 @@ class LeapOCR:
             return self.config.http_client
 
         headers = {
-            "Authorization": f"Bearer {self.api_key}",
+            "X-API-KEY": self.api_key,
             "User-Agent": f"leapocr-python/{__version__}",
             "Content-Type": "application/json",
         }

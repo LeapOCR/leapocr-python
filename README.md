@@ -224,6 +224,37 @@ async def track_progress():
 asyncio.run(track_progress())
 ```
 
+### Using Templates
+
+```python
+async def use_template():
+    async with LeapOCR("your-api-key") as client:
+        # Use a pre-configured template by its slug
+        result = await client.ocr.process_and_wait(
+            "invoice.pdf",
+            options=ProcessOptions(
+                template_slug="invoice-extraction",  # Reference existing template
+            ),
+        )
+
+        print(f"Processed using template: {result.template_name}")
+        print(f"Extracted data: {result.pages[0].text}")
+
+asyncio.run(use_template())
+```
+
+### Deleting Jobs
+
+```python
+async def delete_old_job():
+    async with LeapOCR("your-api-key") as client:
+        # Delete a job when no longer needed
+        response = await client.ocr.delete_job("job-id-123")
+        print(f"Job deleted: {response}")
+
+asyncio.run(delete_old_job())
+```
+
 ### Concurrent Batch Processing
 
 ```python
@@ -385,6 +416,7 @@ async def process_url(
 # Job management
 async def get_job_status(job_id: str) -> JobStatus
 async def get_results(job_id: str, page: int = 1, limit: int = 100) -> JobResult
+async def delete_job(job_id: str) -> dict[str, Any]  # Delete a job
 ```
 
 ### Data Models
@@ -398,7 +430,7 @@ class ProcessOptions:
     model: Model | None = None
     schema: dict[str, Any] | None = None
     instructions: str | None = None
-    template_id: str | None = None
+    template_slug: str | None = None  # Use existing template by slug
     metadata: dict[str, str] = field(default_factory=dict)
 ```
 

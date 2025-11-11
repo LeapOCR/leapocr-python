@@ -12,9 +12,8 @@ Requirements:
 
 import asyncio
 import os
-from typing import List
 
-from leapocr import JobResult, LeapOCR, ProcessOptions, PollOptions
+from leapocr import JobResult, LeapOCR, PollOptions
 
 
 async def process_document(
@@ -30,7 +29,8 @@ async def process_document(
         )
 
         print(
-            f"[{document_id}] ✓ Completed - {len(result.pages)} pages, {result.credits_used} credits"
+            f"[{document_id}] ✓ Completed - {len(result.pages)} pages, "
+            f"{result.credits_used} credits"
         )
         return document_id, result, None
 
@@ -65,8 +65,8 @@ async def main():
         results = await asyncio.gather(*tasks, return_exceptions=False)
 
         # Analyze results
-        successful: List[tuple[int, JobResult]] = []
-        failed: List[tuple[int, Exception]] = []
+        successful: list[tuple[int, JobResult]] = []
+        failed: list[tuple[int, Exception]] = []
 
         for doc_id, result, error in results:
             if error:

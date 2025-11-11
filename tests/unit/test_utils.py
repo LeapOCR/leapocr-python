@@ -2,8 +2,6 @@
 
 from datetime import datetime
 
-import pytest
-
 from leapocr._internal.utils import calculate_progress, parse_datetime
 
 

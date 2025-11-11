@@ -55,7 +55,8 @@ async def main():
 
             status_indicator = "⏳" if status.status == JobStatusType.PROCESSING else "📝"
             print(
-                f"{status_indicator} Status: {status.status.value} - Progress: {status.progress:.1f}%"
+                f"{status_indicator} Status: {status.status.value} - "
+                f"Progress: {status.progress:.1f}%"
             )
 
             if status.status == JobStatusType.COMPLETED:
