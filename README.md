@@ -2,7 +2,7 @@
 
 [![PyPI version](https://badge.fury.io/py/leapocr.svg)](https://badge.fury.io/py/leapocr)
 [![Python Support](https://img.shields.io/pypi/pyversions/leapocr.svg)](https://pypi.org/project/leapocr/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 Official Python SDK for [LeapOCR](https://www.leapocr.com/) - Transform documents into structured data using AI-powered OCR.
 
