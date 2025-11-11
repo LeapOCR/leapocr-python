@@ -116,5 +116,3 @@ class CreditsCreditBalanceResponse(BaseModel):
             "trial_ends_at": obj.get("trial_ends_at")
         })
         return _obj
-
-

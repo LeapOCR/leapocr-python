@@ -76,5 +76,3 @@ class AnalyticsRange(BaseModel):
             "team_id": obj.get("team_id")
         })
         return _obj
-
-

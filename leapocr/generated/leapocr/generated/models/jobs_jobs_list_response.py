@@ -82,5 +82,3 @@ class JobsJobsListResponse(BaseModel):
             "pagination": JobsPaginationInfo.from_dict(obj.get("pagination")) if obj.get("pagination") is not None else None
         })
         return _obj
-
-

@@ -76,5 +76,3 @@ class AnalyticsModelUsageStat(BaseModel):
             "user_id": obj.get("user_id")
         })
         return _obj
-
-

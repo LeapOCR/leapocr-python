@@ -86,5 +86,3 @@ class JobsJobStatusResponse(BaseModel):
             "workflow_status": JobsWorkflowStatusInfo.from_dict(obj.get("workflow_status")) if obj.get("workflow_status") is not None else None
         })
         return _obj
-
-

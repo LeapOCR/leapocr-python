@@ -78,5 +78,3 @@ class AnalyticsTemplateStat(BaseModel):
             "usage_count": obj.get("usage_count")
         })
         return _obj
-
-

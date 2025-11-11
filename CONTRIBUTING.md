@@ -67,9 +67,14 @@ Branch naming conventions:
 Follow these guidelines:
 
 - **Code Style**: Follow PEP 8 and use type hints
-- **Formatting**: Run `make format` before committing
-- **Linting**: Fix all issues from `make lint`
-- **Type Checking**: Fix all issues from `make type-check`
+- **Pre-commit Hooks**: Install and use pre-commit hooks (recommended):
+  ```bash
+  uv run pre-commit install
+  ```
+  This will automatically format and lint your code before each commit.
+- **Formatting**: Run `make format` before committing (or let pre-commit handle it)
+- **Linting**: Fix all issues from `make lint` (or let pre-commit handle it)
+- **Type Checking**: Fix all type errors from `make type-check`
 - **Tests**: Add tests for new functionality
 - **Documentation**: Update docstrings and README if needed
 
@@ -326,6 +331,9 @@ if __name__ == "__main__":
 ## Common Tasks
 
 ```bash
+# Install pre-commit hooks (recommended)
+uv run pre-commit install
+
 # Format code
 make format
 

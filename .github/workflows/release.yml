@@ -82,12 +82,75 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for changelog generation
 
-      - name: Extract release notes
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Extract version
         id: extract-notes
         run: |
           VERSION=${GITHUB_REF#refs/tags/v}
           echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          VERSION=${{ steps.extract-notes.outputs.version }}
+
+          # Get previous tag
+          PREV_TAG=$(git tag --sort=-version:refname | grep -A1 "v${VERSION}" | tail -n1)
+
+          if [ -z "$PREV_TAG" ]; then
+            echo "No previous tag found, using initial commit"
+            PREV_TAG=$(git rev-list --max-parents=0 HEAD)
+          fi
+
+          echo "Generating changelog from ${PREV_TAG} to v${VERSION}"
+
+          # Generate changelog from git log
+          CHANGELOG=$(git log ${PREV_TAG}..v${VERSION} --pretty=format:"- %s (%h)" --reverse | grep -v "^- Merge")
+
+          # Save to multiline output
+          {
+            echo 'changelog<<EOF'
+            echo "$CHANGELOG"
+            echo EOF
+          } >> $GITHUB_OUTPUT
+
+      - name: Update CHANGELOG.md
+        run: |
+          VERSION=${{ steps.extract-notes.outputs.version }}
+          DATE=$(date +%Y-%m-%d)
+
+          # Create new changelog entry
+          cat > /tmp/new_entry.md << 'EOF'
+          ## [${{ steps.extract-notes.outputs.version }}] - ${DATE}
+
+          ${{ steps.changelog.outputs.changelog }}
+
+          EOF
+
+          # Prepend to CHANGELOG.md (create if doesn't exist)
+          if [ -f CHANGELOG.md ]; then
+            cat /tmp/new_entry.md CHANGELOG.md > /tmp/changelog_new.md
+            mv /tmp/changelog_new.md CHANGELOG.md
+          else
+            echo "# Changelog" > CHANGELOG.md
+            echo "" >> CHANGELOG.md
+            cat /tmp/new_entry.md >> CHANGELOG.md
+          fi
+
+      - name: Commit changelog
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add CHANGELOG.md
+          git diff --staged --quiet || git commit -m "chore: update CHANGELOG.md for v${{ steps.extract-notes.outputs.version }}"
+          git push origin HEAD:main
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -108,7 +171,7 @@ jobs:
 
             ## What's Changed
 
-            See the [changelog](https://github.com/leapocr/leapocr-python/blob/main/CHANGELOG.md) for details.
+            ${{ steps.changelog.outputs.changelog }}
 
             ## Documentation
 
@@ -120,4 +183,4 @@ jobs:
             **Full Changelog**: https://github.com/leapocr/leapocr-python/compare/v${{ steps.extract-notes.outputs.version }}...HEAD
           draft: false
           prerelease: false
-          generate_release_notes: true
+          generate_release_notes: false

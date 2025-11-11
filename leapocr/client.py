@@ -1,5 +1,7 @@
 """Main LeapOCR client for document processing."""
 
+from __future__ import annotations
+
 from typing import Any
 
 import httpx
@@ -75,7 +77,7 @@ class LeapOCR:
         if hasattr(self.ocr, "_uploader"):
             await self.ocr._uploader.close()
 
-    async def __aenter__(self) -> "LeapOCR":
+    async def __aenter__(self) -> LeapOCR:
         """Async context manager entry."""
         return self
 

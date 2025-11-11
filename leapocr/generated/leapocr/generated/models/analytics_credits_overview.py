@@ -78,5 +78,3 @@ class AnalyticsCreditsOverview(BaseModel):
             "refunded": obj.get("refunded")
         })
         return _obj
-
-

@@ -74,5 +74,3 @@ class HealthHealthCheck(BaseModel):
             "status": obj.get("status")
         })
         return _obj
-
-

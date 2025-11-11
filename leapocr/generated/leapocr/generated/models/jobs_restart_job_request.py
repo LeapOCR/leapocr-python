@@ -70,5 +70,3 @@ class JobsRestartJobRequest(BaseModel):
             "preserve_progress": obj.get("preserve_progress")
         })
         return _obj
-
-

@@ -78,5 +78,3 @@ class ModelsListModelResponse(BaseModel):
             "surcharge_per_page": obj.get("surcharge_per_page")
         })
         return _obj
-
-

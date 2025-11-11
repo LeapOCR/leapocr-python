@@ -90,5 +90,3 @@ class UploadDirectUploadResponse(BaseModel):
             "upload_type": obj.get("upload_type")
         })
         return _obj
-
-

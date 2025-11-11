@@ -85,5 +85,3 @@ class CreditsProductCatalog(BaseModel):
             "subscriptions": [CreditsCatalogProduct.from_dict(_item) for _item in obj.get("subscriptions")] if obj.get("subscriptions") is not None else None
         })
         return _obj
-
-

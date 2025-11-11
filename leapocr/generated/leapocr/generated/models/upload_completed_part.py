@@ -70,5 +70,3 @@ class UploadCompletedPart(BaseModel):
             "part_number": obj.get("part_number")
         })
         return _obj
-
-

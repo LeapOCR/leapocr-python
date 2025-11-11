@@ -199,7 +199,7 @@ class OCRService:
         )
 
         self._check_response(response)
-        return response.json()
+        return response.json()  # type: ignore[no-any-return]
 
     async def get_results(self, job_id: str, page: int = 1, limit: int = 100) -> JobResult:
         """Get job results.
@@ -298,7 +298,12 @@ class OCRService:
             JobFailedError: If processing fails
         """
         poll_opts = poll_options or PollOptions()
-        await poll_until_done(self.get_job_status, job_id, poll_opts)
+
+        async def get_status(job_id: str) -> JobStatus:
+            """Wrapper to properly type the bound method."""
+            return await self.get_job_status(job_id)
+
+        await poll_until_done(get_status, job_id, poll_opts)
         return await self.get_results(job_id)
 
     async def _upload_file(

@@ -72,5 +72,3 @@ class CreditsCatalogPrice(BaseModel):
             "formatted": obj.get("formatted")
         })
         return _obj
-
-

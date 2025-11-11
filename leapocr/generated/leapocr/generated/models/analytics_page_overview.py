@@ -78,5 +78,3 @@ class AnalyticsPageOverview(BaseModel):
             "total_tokens": obj.get("total_tokens")
         })
         return _obj
-
-

@@ -78,5 +78,3 @@ class ModelsListModelsListResponse(BaseModel):
             "models": [ModelsListModelResponse.from_dict(_item) for _item in obj.get("models")] if obj.get("models") is not None else None
         })
         return _obj
-
-

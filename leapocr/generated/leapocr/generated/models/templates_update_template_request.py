@@ -84,5 +84,3 @@ class TemplatesUpdateTemplateRequest(BaseModel):
             "tags": obj.get("tags")
         })
         return _obj
-
-

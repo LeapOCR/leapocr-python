@@ -92,5 +92,3 @@ class CreditsCatalogProduct(BaseModel):
             "type": obj.get("type")
         })
         return _obj
-
-

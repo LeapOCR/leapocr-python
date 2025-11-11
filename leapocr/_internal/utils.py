@@ -1,6 +1,9 @@
 """Common utility functions for LeapOCR SDK."""
 
+from __future__ import annotations
+
 from datetime import datetime
+from typing import Any
 
 
 def parse_datetime(s: str | None) -> datetime:
@@ -32,7 +35,7 @@ def parse_datetime(s: str | None) -> datetime:
             return datetime.fromtimestamp(0)
 
 
-def calculate_progress(status_data: dict) -> float:
+def calculate_progress(status_data: dict[str, Any]) -> float:
     """Calculate progress percentage from status data.
 
     Args:
@@ -48,4 +51,5 @@ def calculate_progress(status_data: dict) -> float:
         return 0.0
 
     progress = (processed / total) * 100.0
-    return min(100.0, max(0.0, progress))
+    result: float = min(100.0, max(0.0, progress))
+    return result

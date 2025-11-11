@@ -1,6 +1,9 @@
 """Status polling utilities for long-running OCR jobs."""
 
+from __future__ import annotations
+
 import asyncio
+from collections.abc import Awaitable
 from datetime import datetime, timedelta
 from typing import TYPE_CHECKING, Callable
 
@@ -12,7 +15,7 @@ if TYPE_CHECKING:
 
 
 async def poll_until_done(
-    get_status_fn: Callable[[str], "JobStatus"],
+    get_status_fn: Callable[[str], Awaitable[JobStatus]],
     job_id: str,
     options: PollOptions | None = None,
 ) -> None:
@@ -65,13 +68,13 @@ async def poll_until_done(
 
 
 async def poll_with_backoff(
-    get_status_fn: Callable[[str], "JobStatus"],
+    get_status_fn: Callable[[str], Awaitable[JobStatus]],
     job_id: str,
     initial_interval: float = 1.0,
     max_interval: float = 30.0,
     backoff_multiplier: float = 1.5,
     max_wait: float = 300.0,
-    on_progress: Callable[["JobStatus"], None] | None = None,
+    on_progress: Callable[[JobStatus], None] | None = None,
 ) -> None:
     """Poll job status with exponential backoff.
 

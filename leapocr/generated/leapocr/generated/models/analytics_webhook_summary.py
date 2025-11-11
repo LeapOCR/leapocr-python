@@ -78,5 +78,3 @@ class AnalyticsWebhookSummary(BaseModel):
             "total_events": obj.get("total_events")
         })
         return _obj
-
-

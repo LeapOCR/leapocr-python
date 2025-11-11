@@ -84,5 +84,3 @@ class TemplatesTemplateStatsResponse(BaseModel):
             "total_usage": obj.get("total_usage")
         })
         return _obj
-
-

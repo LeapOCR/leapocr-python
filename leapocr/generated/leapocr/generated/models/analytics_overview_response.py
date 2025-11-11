@@ -96,5 +96,3 @@ class AnalyticsOverviewResponse(BaseModel):
             "webhooks": AnalyticsWebhookSummary.from_dict(obj.get("webhooks")) if obj.get("webhooks") is not None else None
         })
         return _obj
-
-

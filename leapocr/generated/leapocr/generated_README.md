@@ -189,7 +189,7 @@ Class | Method | HTTP request | Description
 
 Authentication schemes defined for the API:
 <a id=""></a>
-### 
+###
 
 - **Type**: API key
 - **API key parameter name**: X-API-KEY
@@ -204,5 +204,3 @@ Authentication schemes defined for the API:
 ## Author
 
 support@leapocr.com
-
-

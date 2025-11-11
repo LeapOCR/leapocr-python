@@ -81,5 +81,3 @@ class ResponseErrorResponse(BaseModel):
             "error": ResponseErrorMessage.from_dict(obj.get("error")) if obj.get("error") is not None else None
         })
         return _obj
-
-

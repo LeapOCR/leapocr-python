@@ -78,5 +78,3 @@ class CreditsGrantedBenefitResponse(BaseModel):
             "properties": obj.get("properties")
         })
         return _obj
-
-

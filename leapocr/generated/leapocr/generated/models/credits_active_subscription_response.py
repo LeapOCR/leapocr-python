@@ -84,5 +84,3 @@ class CreditsActiveSubscriptionResponse(BaseModel):
             "started_at": obj.get("started_at")
         })
         return _obj
-
-

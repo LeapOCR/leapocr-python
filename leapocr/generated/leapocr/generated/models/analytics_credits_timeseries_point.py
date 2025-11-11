@@ -78,5 +78,3 @@ class AnalyticsCreditsTimeseriesPoint(BaseModel):
             "refunded": obj.get("refunded")
         })
         return _obj
-
-

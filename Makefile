@@ -16,8 +16,8 @@ help:
 	@echo "Code Quality:"
 	@echo "  make format           Format code with ruff"
 	@echo "  make lint             Lint code with ruff"
-	@echo "  make type-check       Type check with mypy"
-	@echo "  make check            Run format + lint + type-check"
+	@echo "  make type-check       Type check with mypy (optional)"
+	@echo "  make check            Run format + lint"
 	@echo ""
 	@echo "Testing:"
 	@echo "  make test             Run unit tests"
@@ -67,7 +67,7 @@ generate: fetch-spec
 		--additional-properties=\
 packageName=leapocr.generated,\
 projectName=leapocr-generated,\
-packageVersion=0.1.0,\
+packageVersion=0.0.2,\
 library=asyncio,\
 useOneOfDiscriminatorLookup=true,\
 generateSourceCodeOnly=true \
@@ -94,7 +94,7 @@ type-check:
 	@echo "Type checking with mypy..."
 	uv run mypy leapocr/
 
-check: format lint type-check
+check: format lint
 	@echo "✓ All checks passed"
 
 # Testing

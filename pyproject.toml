@@ -4,17 +4,14 @@ version = "0.0.2"
 description = "Official Python SDK for LeapOCR - Transform documents into structured data using AI-powered OCR"
 readme = "README.md"
 requires-python = ">=3.9"
-authors = [
-    {name = "LeapOCR", email = "support@leapocr.com"}
-]
-license = {text = "MIT"}
+authors = [{ name = "LeapOCR", email = "support@leapocr.com" }]
+license = { file = "LICENSE" }
 keywords = ["ocr", "document-processing", "ai", "pdf", "text-extraction"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: Apache Software License",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -34,6 +31,7 @@ dev = [
     "pytest-cov>=4.1.0",
     "ruff>=0.1.6",
     "mypy>=1.7.0",
+    "pre-commit>=3.5.0",
 ]
 
 [project.urls]
@@ -49,18 +47,16 @@ build-backend = "hatchling.build"
 [tool.ruff]
 line-length = 100
 target-version = "py39"
-exclude = [
-    "leapocr/generated",
-]
+exclude = ["leapocr/generated"]
 
 [tool.ruff.lint]
 select = [
-    "E",   # pycodestyle errors
-    "F",   # pyflakes
-    "I",   # isort
-    "N",   # pep8-naming
-    "W",   # pycodestyle warnings
-    "UP",  # pyupgrade
+    "E",  # pycodestyle errors
+    "F",  # pyflakes
+    "I",  # isort
+    "N",  # pep8-naming
+    "W",  # pycodestyle warnings
+    "UP", # pyupgrade
 ]
 ignore = []
 
@@ -98,14 +94,18 @@ addopts = [
     "--strict-markers",
     "--strict-config",
     "--showlocals",
+    "--tb=short",
+    "-v",
+]
+markers = [
+    "unit: Unit tests (fast, no external dependencies)",
+    "integration: Integration tests (require API key and running server)",
+    "slow: Tests that take a long time to run",
 ]
 
 [tool.coverage.run]
 source = ["leapocr"]
-omit = [
-    "leapocr/generated/*",
-    "tests/*",
-]
+omit = ["leapocr/generated/*", "tests/*"]
 
 [tool.coverage.report]
 exclude_lines = [
@@ -117,3 +117,6 @@ exclude_lines = [
     "if TYPE_CHECKING:",
     "@abstractmethod",
 ]
+
+[dependency-groups]
+dev = ["pre-commit>=4.3.0"]

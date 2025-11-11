@@ -82,5 +82,3 @@ class AnalyticsJobsTimeseriesGet200Response(BaseModel):
             "timeseries": [AnalyticsJobTimeseriesPoint.from_dict(_item) for _item in obj.get("timeseries")] if obj.get("timeseries") is not None else None
         })
         return _obj
-
-

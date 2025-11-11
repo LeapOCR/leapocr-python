@@ -102,5 +102,3 @@ class TemplatesTemplateResponse(BaseModel):
             "user_id": obj.get("user_id")
         })
         return _obj
-
-

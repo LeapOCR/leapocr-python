@@ -1,5 +1,7 @@
 """Retry logic with exponential backoff for LeapOCR SDK."""
 
+from __future__ import annotations
+
 import asyncio
 from collections.abc import Awaitable
 from typing import Callable, TypeVar

@@ -76,5 +76,3 @@ class UploadDirectUploadCompleteRequest(BaseModel):
             "parts": [UploadCompletedPart.from_dict(_item) for _item in obj.get("parts")] if obj.get("parts") is not None else None
         })
         return _obj
-
-

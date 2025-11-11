@@ -90,5 +90,3 @@ class AnalyticsJobOverview(BaseModel):
             "total_pages": obj.get("total_pages")
         })
         return _obj
-
-

@@ -70,5 +70,3 @@ class CreditsCatalogBenefit(BaseModel):
             "units": obj.get("units")
         })
         return _obj
-
-

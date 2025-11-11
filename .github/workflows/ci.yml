@@ -80,13 +80,13 @@ jobs:
       - name: Install dependencies
         run: uv sync
 
-      - name: Run unit tests
-        run: uv run pytest tests/unit/ -v --tb=short
+      - name: Run unit tests only
+        run: uv run pytest tests/ -v --tb=short --ignore=tests/integration
 
       - name: Run tests with coverage
         if: matrix.python-version == '3.12'
         run: |
-          uv run pytest tests/unit/ --cov=leapocr --cov-report=xml --cov-report=term
+          uv run pytest tests/ --ignore=tests/integration --cov=leapocr --cov-report=xml --cov-report=term
 
       - name: Upload coverage to Codecov
         if: matrix.python-version == '3.12'

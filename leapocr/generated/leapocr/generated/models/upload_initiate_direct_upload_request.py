@@ -92,5 +92,3 @@ class UploadInitiateDirectUploadRequest(BaseModel):
             "template_slug": obj.get("template_slug")
         })
         return _obj
-
-

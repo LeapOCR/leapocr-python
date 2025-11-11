@@ -74,5 +74,3 @@ class HealthHealthSummary(BaseModel):
             "total": obj.get("total")
         })
         return _obj
-
-

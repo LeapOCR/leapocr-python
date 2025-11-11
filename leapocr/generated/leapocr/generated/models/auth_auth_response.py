@@ -77,5 +77,3 @@ class AuthAuthResponse(BaseModel):
             "user": obj.get("user")
         })
         return _obj
-
-

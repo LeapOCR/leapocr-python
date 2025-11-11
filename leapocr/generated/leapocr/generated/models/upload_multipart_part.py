@@ -74,5 +74,3 @@ class UploadMultipartPart(BaseModel):
             "upload_url": obj.get("upload_url")
         })
         return _obj
-
-

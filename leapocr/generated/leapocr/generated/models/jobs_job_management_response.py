@@ -78,5 +78,3 @@ class JobsJobManagementResponse(BaseModel):
             "success": obj.get("success")
         })
         return _obj
-
-

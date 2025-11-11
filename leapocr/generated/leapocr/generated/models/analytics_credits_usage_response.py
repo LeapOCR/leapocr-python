@@ -98,5 +98,3 @@ class AnalyticsCreditsUsageResponse(BaseModel):
             "timeseries": [AnalyticsCreditsTimeseriesPoint.from_dict(_item) for _item in obj.get("timeseries")] if obj.get("timeseries") is not None else None
         })
         return _obj
-
-

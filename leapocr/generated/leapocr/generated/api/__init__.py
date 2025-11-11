@@ -12,4 +12,3 @@ from leapocr.generated.api.templates_api import TemplatesApi
 from leapocr.generated.api.upload_api import UploadApi
 from leapocr.generated.api.webhooks_api import WebhooksApi
 from leapocr.generated.api.analytics_api import AnalyticsApi
-

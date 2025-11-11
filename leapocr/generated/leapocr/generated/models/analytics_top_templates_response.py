@@ -82,5 +82,3 @@ class AnalyticsTopTemplatesResponse(BaseModel):
             "templates": [AnalyticsTemplateStat.from_dict(_item) for _item in obj.get("templates")] if obj.get("templates") is not None else None
         })
         return _obj
-
-

@@ -98,5 +98,3 @@ class CreditsCreditTransactionOrganizationResponse(BaseModel):
             "transaction_type": obj.get("transaction_type")
         })
         return _obj
-
-

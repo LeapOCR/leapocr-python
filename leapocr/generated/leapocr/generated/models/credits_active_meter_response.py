@@ -78,5 +78,3 @@ class CreditsActiveMeterResponse(BaseModel):
             "meter_name": obj.get("meter_name")
         })
         return _obj
-
-

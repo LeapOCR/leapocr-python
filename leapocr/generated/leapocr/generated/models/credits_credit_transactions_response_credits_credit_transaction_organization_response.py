@@ -82,5 +82,3 @@ class CreditsCreditTransactionsResponseCreditsCreditTransactionOrganizationRespo
             "transactions": [CreditsCreditTransactionOrganizationResponse.from_dict(_item) for _item in obj.get("transactions")] if obj.get("transactions") is not None else None
         })
         return _obj
-
-

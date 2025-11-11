@@ -1,9 +1,11 @@
 """Input validation utilities for LeapOCR SDK."""
 
+from __future__ import annotations
+
 import os
 from dataclasses import dataclass
 from pathlib import Path
-from typing import BinaryIO, Union
+from typing import BinaryIO
 
 from ..errors import FileError
 
@@ -34,7 +36,7 @@ class ValidationResult:
 
 
 def validate_file(
-    file_path: Union[str, Path],
+    file_path: str | Path,
     max_size: int = MAX_FILE_SIZE,
     allowed_types: set[str] | None = None,
 ) -> ValidationResult:
@@ -94,7 +96,7 @@ def validate_file(
     return ValidationResult(valid=True, warnings=warnings or None)
 
 
-def get_file_size(file: Union[str, Path, BinaryIO]) -> int:
+def get_file_size(file: str | Path | BinaryIO) -> int:
     """Get file size in bytes.
 
     Args:

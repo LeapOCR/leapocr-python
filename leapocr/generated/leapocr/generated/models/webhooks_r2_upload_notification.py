@@ -72,5 +72,3 @@ class WebhooksR2UploadNotification(BaseModel):
             "timestamp": obj.get("timestamp")
         })
         return _obj
-
-

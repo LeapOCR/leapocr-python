@@ -70,5 +70,3 @@ class JobsRetryJobRequest(BaseModel):
             "reset_pages": obj.get("reset_pages")
         })
         return _obj
-
-

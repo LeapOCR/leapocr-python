@@ -72,5 +72,3 @@ class ModelsPageMetadata(BaseModel):
             "retry_count": obj.get("retry_count")
         })
         return _obj
-
-
