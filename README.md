@@ -26,7 +26,7 @@ uv add leapocr
 
 ### Prerequisites
 
-- Python 3.10 or higher
+- Python 3.9 or higher
 - LeapOCR API key ([sign up here](https://www.leapocr.com/signup))
 
 ### Basic Example
