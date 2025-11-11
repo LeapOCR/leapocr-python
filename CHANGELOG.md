@@ -1,3 +1,11 @@
+## [0.0.3] - ${DATE}
+
+- chore: update CHANGELOG.md for v0.0.2 (c936efc)
+- Update LICENSE and README to reflect Apache 2.0 license (5f5a20b)
+- Enhance project metadata and add logo assets (9e442ef)
+- Update dependencies and logo URL in project configuration (29096ea)
+- Update version to 0.0.3 across project files (6847878)
+
 ## [0.0.2] - ${DATE}
 
 - gen (1040bb7)
