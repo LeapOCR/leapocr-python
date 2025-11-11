@@ -47,7 +47,7 @@ fetch-spec:
 	curl -s -o openapi.json http://localhost:8080/api/v1/docs/openapi.json
 	@echo "✓ Downloaded to openapi.json"
 
-generate: openapi.json
+generate: fetch-spec
 	@echo "Checking for openapi-generator-cli..."
 	@command -v openapi-generator-cli >/dev/null 2>&1 || { \
 		echo "Error: openapi-generator-cli not found"; \

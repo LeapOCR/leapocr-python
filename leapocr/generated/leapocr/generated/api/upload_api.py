@@ -198,7 +198,7 @@ class UploadApi:
     async def direct_upload(self, upload_initiate_direct_upload_request : Annotated[UploadInitiateDirectUploadRequest, Field(..., description="Upload initiation request")], **kwargs) -> UploadDirectUploadResponse:  # noqa: E501
         """Direct upload  # noqa: E501
 
-        Create a job and generate presigned URLs for direct file upload to S3. Uses multipart upload for all files (1 part for small files, multiple parts for large files ≥50MB). **Output Types:** - `structured`: Structured data extraction. Requires one of: category_id (with schema & instructions) - `markdown`: Page-by-page OCR. All configuration fields are optional - `per_page_structured`: Per-page structured extraction (future or hybrid mode) **Note:** Only one of category_id, schema, or instruction can be provided per request  # noqa: E501
+        Create a job and generate presigned URLs for direct file upload to S3. Uses multipart upload for all files (1 part for small files, multiple parts for large files ≥50MB). **Output Types:** - `structured`: Structured data extraction. Requires either template_slug OR format (with schema & instructions) - `markdown`: Page-by-page OCR. All configuration fields are optional - `per_page_structured`: Per-page structured extraction (future or hybrid mode) **Note:** Only one of template_slug or format can be provided per request  # noqa: E501
 
         :param upload_initiate_direct_upload_request: Upload initiation request (required)
         :type upload_initiate_direct_upload_request: UploadInitiateDirectUploadRequest
@@ -221,7 +221,7 @@ class UploadApi:
     async def direct_upload_with_http_info(self, upload_initiate_direct_upload_request : Annotated[UploadInitiateDirectUploadRequest, Field(..., description="Upload initiation request")], **kwargs) -> ApiResponse:  # noqa: E501
         """Direct upload  # noqa: E501
 
-        Create a job and generate presigned URLs for direct file upload to S3. Uses multipart upload for all files (1 part for small files, multiple parts for large files ≥50MB). **Output Types:** - `structured`: Structured data extraction. Requires one of: category_id (with schema & instructions) - `markdown`: Page-by-page OCR. All configuration fields are optional - `per_page_structured`: Per-page structured extraction (future or hybrid mode) **Note:** Only one of category_id, schema, or instruction can be provided per request  # noqa: E501
+        Create a job and generate presigned URLs for direct file upload to S3. Uses multipart upload for all files (1 part for small files, multiple parts for large files ≥50MB). **Output Types:** - `structured`: Structured data extraction. Requires either template_slug OR format (with schema & instructions) - `markdown`: Page-by-page OCR. All configuration fields are optional - `per_page_structured`: Per-page structured extraction (future or hybrid mode) **Note:** Only one of template_slug or format can be provided per request  # noqa: E501
 
         :param upload_initiate_direct_upload_request: Upload initiation request (required)
         :type upload_initiate_direct_upload_request: UploadInitiateDirectUploadRequest
@@ -333,7 +333,7 @@ class UploadApi:
     async def upload_from_remote_url(self, upload_remote_url_upload_request : Annotated[UploadRemoteURLUploadRequest, Field(..., description="Remote URL upload request")], **kwargs) -> UploadRemoteURLUploadResponse:  # noqa: E501
         """Remote URL upload  # noqa: E501
 
-        Create a job and start processing from a remote URL. Supported format: PDF (.pdf) only. **Output Types:** - `structured`: Structured data extraction. Requires one of: category_id (with schema & instructions) - `markdown`: Page-by-page OCR. All configuration fields are optional - `per_page_structured`: Per-page structured extraction (future or hybrid mode) **Note:** Only one of category_id, schema, or instruction can be provided per request  # noqa: E501
+        Create a job and start processing from a remote URL. Supported format: PDF (.pdf) only. **Output Types:** - `structured`: Structured data extraction. Requires either template_slug OR format (with schema & instructions) - `markdown`: Page-by-page OCR. All configuration fields are optional - `per_page_structured`: Per-page structured extraction (future or hybrid mode) **Note:** Only one of template_slug or format can be provided per request  # noqa: E501
 
         :param upload_remote_url_upload_request: Remote URL upload request (required)
         :type upload_remote_url_upload_request: UploadRemoteURLUploadRequest
@@ -356,7 +356,7 @@ class UploadApi:
     async def upload_from_remote_url_with_http_info(self, upload_remote_url_upload_request : Annotated[UploadRemoteURLUploadRequest, Field(..., description="Remote URL upload request")], **kwargs) -> ApiResponse:  # noqa: E501
         """Remote URL upload  # noqa: E501
 
-        Create a job and start processing from a remote URL. Supported format: PDF (.pdf) only. **Output Types:** - `structured`: Structured data extraction. Requires one of: category_id (with schema & instructions) - `markdown`: Page-by-page OCR. All configuration fields are optional - `per_page_structured`: Per-page structured extraction (future or hybrid mode) **Note:** Only one of category_id, schema, or instruction can be provided per request  # noqa: E501
+        Create a job and start processing from a remote URL. Supported format: PDF (.pdf) only. **Output Types:** - `structured`: Structured data extraction. Requires either template_slug OR format (with schema & instructions) - `markdown`: Page-by-page OCR. All configuration fields are optional - `per_page_structured`: Per-page structured extraction (future or hybrid mode) **Note:** Only one of template_slug or format can be provided per request  # noqa: E501
 
         :param upload_remote_url_upload_request: Remote URL upload request (required)
         :type upload_remote_url_upload_request: UploadRemoteURLUploadRequest

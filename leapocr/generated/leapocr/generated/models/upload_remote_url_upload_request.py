@@ -31,9 +31,9 @@ class UploadRemoteURLUploadRequest(BaseModel):
     instructions: Optional[constr(strict=True, max_length=100)] = None
     model: Optional[StrictStr] = None
     var_schema: Optional[Dict[str, Any]] = Field(default=None, alias="schema")
-    template_id: Optional[StrictStr] = Field(default=None, description="Option 1: Use existing template")
+    template_slug: Optional[StrictStr] = Field(default=None, description="Option 1: Use existing template by slug")
     url: constr(strict=True, max_length=2000) = Field(...)
-    __properties = ["file_name", "format", "instructions", "model", "schema", "template_id", "url"]
+    __properties = ["file_name", "format", "instructions", "model", "schema", "template_slug", "url"]
 
     @validator('format')
     def format_validate_enum(cls, value):
@@ -86,7 +86,7 @@ class UploadRemoteURLUploadRequest(BaseModel):
             "instructions": obj.get("instructions"),
             "model": obj.get("model"),
             "var_schema": obj.get("schema"),
-            "template_id": obj.get("template_id"),
+            "template_slug": obj.get("template_slug"),
             "url": obj.get("url")
         })
         return _obj

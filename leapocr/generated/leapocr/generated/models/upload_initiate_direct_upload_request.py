@@ -33,8 +33,8 @@ class UploadInitiateDirectUploadRequest(BaseModel):
     instructions: Optional[constr(strict=True, max_length=100)] = None
     model: Optional[StrictStr] = None
     var_schema: Optional[Dict[str, Any]] = Field(default=None, alias="schema")
-    template_id: Optional[StrictStr] = Field(default=None, description="Option 1: Use existing template")
-    __properties = ["content_type", "file_name", "file_size", "format", "instructions", "model", "schema", "template_id"]
+    template_slug: Optional[StrictStr] = Field(default=None, description="Option 1: Use existing template by slug")
+    __properties = ["content_type", "file_name", "file_size", "format", "instructions", "model", "schema", "template_slug"]
 
     @validator('format')
     def format_validate_enum(cls, value):
@@ -89,7 +89,7 @@ class UploadInitiateDirectUploadRequest(BaseModel):
             "instructions": obj.get("instructions"),
             "model": obj.get("model"),
             "var_schema": obj.get("schema"),
-            "template_id": obj.get("template_id")
+            "template_slug": obj.get("template_slug")
         })
         return _obj
 

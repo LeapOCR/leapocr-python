@@ -38,12 +38,13 @@ class TemplatesTemplateResponse(BaseModel):
     last_used: Optional[datetime] = None
     name: Optional[StrictStr] = None
     var_schema: Optional[Dict[str, Any]] = Field(default=None, alias="schema", description="JSON schema definition")
+    slug: Optional[StrictStr] = None
     tags: Optional[conlist(StrictStr)] = None
     team_id: Optional[StrictStr] = None
     updated_at: Optional[datetime] = None
     usage_count: Optional[conint(strict=True, ge=0)] = None
     user_id: Optional[StrictStr] = None
-    __properties = ["checksum", "color", "created_at", "description", "enabled", "favorite", "format", "id", "instructions", "last_used", "name", "schema", "tags", "team_id", "updated_at", "usage_count", "user_id"]
+    __properties = ["checksum", "color", "created_at", "description", "enabled", "favorite", "format", "id", "instructions", "last_used", "name", "schema", "slug", "tags", "team_id", "updated_at", "usage_count", "user_id"]
 
     class Config:
         """Pydantic configuration"""
@@ -93,6 +94,7 @@ class TemplatesTemplateResponse(BaseModel):
             "last_used": obj.get("last_used"),
             "name": obj.get("name"),
             "var_schema": obj.get("schema"),
+            "slug": obj.get("slug"),
             "tags": obj.get("tags"),
             "team_id": obj.get("team_id"),
             "updated_at": obj.get("updated_at"),

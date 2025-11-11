@@ -55,7 +55,7 @@ class AnalyticsApi:
     async def analytics_credits_usage_get(self, range : Annotated[Optional[StrictStr], Field(description="Time range preset")] = None, start : Annotated[Optional[StrictStr], Field(description="Start date (RFC3339 or YYYY-MM-DD format)")] = None, end : Annotated[Optional[StrictStr], Field(description="End date (RFC3339 or YYYY-MM-DD format)")] = None, bucket : Annotated[Optional[StrictStr], Field(description="Time bucket granularity")] = None, granularity : Annotated[Optional[StrictStr], Field(description="Alias for bucket parameter")] = None, team_id : Annotated[Optional[StrictStr], Field(description="Filter by team ID")] = None, **kwargs) -> AnalyticsCreditsUsageResponse:  # noqa: E501
         """Get credit usage analytics  # noqa: E501
 
-        Returns comprehensive credit analytics including snapshot data, timeseries trends, and tier usage breakdown  # noqa: E501
+        Returns comprehensive credit analytics including snapshot data, timeseries trends, and model usage breakdown  # noqa: E501
 
         :param range: Time range preset
         :type range: str
@@ -88,7 +88,7 @@ class AnalyticsApi:
     async def analytics_credits_usage_get_with_http_info(self, range : Annotated[Optional[StrictStr], Field(description="Time range preset")] = None, start : Annotated[Optional[StrictStr], Field(description="Start date (RFC3339 or YYYY-MM-DD format)")] = None, end : Annotated[Optional[StrictStr], Field(description="End date (RFC3339 or YYYY-MM-DD format)")] = None, bucket : Annotated[Optional[StrictStr], Field(description="Time bucket granularity")] = None, granularity : Annotated[Optional[StrictStr], Field(description="Alias for bucket parameter")] = None, team_id : Annotated[Optional[StrictStr], Field(description="Filter by team ID")] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """Get credit usage analytics  # noqa: E501
 
-        Returns comprehensive credit analytics including snapshot data, timeseries trends, and tier usage breakdown  # noqa: E501
+        Returns comprehensive credit analytics including snapshot data, timeseries trends, and model usage breakdown  # noqa: E501
 
         :param range: Time range preset
         :type range: str
@@ -199,7 +199,6 @@ class AnalyticsApi:
             '200': "AnalyticsCreditsUsageResponse",
             '400': "ResponseErrorResponse",
             '401': "ResponseErrorResponse",
-            '403': "ResponseErrorResponse",
             '500': "ResponseErrorResponse",
         }
 
@@ -367,7 +366,6 @@ class AnalyticsApi:
             '200': "AnalyticsJobsTimeseriesGet200Response",
             '400': "ResponseErrorResponse",
             '401': "ResponseErrorResponse",
-            '403': "ResponseErrorResponse",
             '500': "ResponseErrorResponse",
         }
 
@@ -519,7 +517,6 @@ class AnalyticsApi:
             '200': "AnalyticsOverviewResponse",
             '400': "ResponseErrorResponse",
             '401': "ResponseErrorResponse",
-            '403': "ResponseErrorResponse",
             '500': "ResponseErrorResponse",
         }
 
@@ -687,7 +684,6 @@ class AnalyticsApi:
             '200': "AnalyticsPagesTimeseriesGet200Response",
             '400': "ResponseErrorResponse",
             '401': "ResponseErrorResponse",
-            '403': "ResponseErrorResponse",
             '500': "ResponseErrorResponse",
         }
 
@@ -847,7 +843,6 @@ class AnalyticsApi:
             '200': "AnalyticsTopTemplatesResponse",
             '400': "ResponseErrorResponse",
             '401': "ResponseErrorResponse",
-            '403': "ResponseErrorResponse",
             '500': "ResponseErrorResponse",
         }
 

@@ -51,7 +51,7 @@ class CreditsApi:
         self.api_client = api_client
 
     @validate_arguments
-    async def get_credit_transactions_by_organization_id(self, organization_id : Annotated[StrictStr, Field(..., description="Organization ID")], page : Annotated[Optional[conint(strict=True, ge=1)], Field(description="Page number (default: 1)")] = None, limit : Annotated[Optional[conint(strict=True, le=100, ge=1)], Field(description="Items per page (default: 20)")] = None, search : Annotated[Optional[StrictStr], Field(description="Search in description, file name, tier, or project name")] = None, tier : Annotated[Optional[StrictStr], Field(description="Filter by tier")] = None, sort_by : Annotated[Optional[StrictStr], Field(description="Sort by field")] = None, created_from : Annotated[Optional[StrictStr], Field(description="Filter transactions from date (RFC3339 format)")] = None, created_to : Annotated[Optional[StrictStr], Field(description="Filter transactions to date (RFC3339 format)")] = None, **kwargs) -> CreditsCreditTransactionsResponseCreditsCreditTransactionOrganizationResponse:  # noqa: E501
+    async def get_credit_transactions_by_organization_id(self, organization_id : Annotated[StrictStr, Field(..., description="Organization ID")], page : Annotated[Optional[conint(strict=True, ge=1)], Field(description="Page number (default: 1)")] = None, limit : Annotated[Optional[conint(strict=True, le=100, ge=1)], Field(description="Items per page (default: 20)")] = None, search : Annotated[Optional[StrictStr], Field(description="Search in description, file name, model, or project name")] = None, model : Annotated[Optional[StrictStr], Field(description="Filter by model")] = None, sort_by : Annotated[Optional[StrictStr], Field(description="Sort by field")] = None, created_from : Annotated[Optional[StrictStr], Field(description="Filter transactions from date (RFC3339 format)")] = None, created_to : Annotated[Optional[StrictStr], Field(description="Filter transactions to date (RFC3339 format)")] = None, **kwargs) -> CreditsCreditTransactionsResponseCreditsCreditTransactionOrganizationResponse:  # noqa: E501
         """Get credit transactions by organization ID  # noqa: E501
 
         Retrieve paginated list of credit transactions for the authenticated user's organization  # noqa: E501
@@ -62,10 +62,10 @@ class CreditsApi:
         :type page: int
         :param limit: Items per page (default: 20)
         :type limit: int
-        :param search: Search in description, file name, tier, or project name
+        :param search: Search in description, file name, model, or project name
         :type search: str
-        :param tier: Filter by tier
-        :type tier: str
+        :param model: Filter by model
+        :type model: str
         :param sort_by: Sort by field
         :type sort_by: str
         :param created_from: Filter transactions from date (RFC3339 format)
@@ -85,10 +85,10 @@ class CreditsApi:
         if '_preload_content' in kwargs:
             message = "Error! Please call the get_credit_transactions_by_organization_id_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
             raise ValueError(message)
-        return await self.get_credit_transactions_by_organization_id_with_http_info(organization_id, page, limit, search, tier, sort_by, created_from, created_to, **kwargs)  # noqa: E501
+        return await self.get_credit_transactions_by_organization_id_with_http_info(organization_id, page, limit, search, model, sort_by, created_from, created_to, **kwargs)  # noqa: E501
 
     @validate_arguments
-    async def get_credit_transactions_by_organization_id_with_http_info(self, organization_id : Annotated[StrictStr, Field(..., description="Organization ID")], page : Annotated[Optional[conint(strict=True, ge=1)], Field(description="Page number (default: 1)")] = None, limit : Annotated[Optional[conint(strict=True, le=100, ge=1)], Field(description="Items per page (default: 20)")] = None, search : Annotated[Optional[StrictStr], Field(description="Search in description, file name, tier, or project name")] = None, tier : Annotated[Optional[StrictStr], Field(description="Filter by tier")] = None, sort_by : Annotated[Optional[StrictStr], Field(description="Sort by field")] = None, created_from : Annotated[Optional[StrictStr], Field(description="Filter transactions from date (RFC3339 format)")] = None, created_to : Annotated[Optional[StrictStr], Field(description="Filter transactions to date (RFC3339 format)")] = None, **kwargs) -> ApiResponse:  # noqa: E501
+    async def get_credit_transactions_by_organization_id_with_http_info(self, organization_id : Annotated[StrictStr, Field(..., description="Organization ID")], page : Annotated[Optional[conint(strict=True, ge=1)], Field(description="Page number (default: 1)")] = None, limit : Annotated[Optional[conint(strict=True, le=100, ge=1)], Field(description="Items per page (default: 20)")] = None, search : Annotated[Optional[StrictStr], Field(description="Search in description, file name, model, or project name")] = None, model : Annotated[Optional[StrictStr], Field(description="Filter by model")] = None, sort_by : Annotated[Optional[StrictStr], Field(description="Sort by field")] = None, created_from : Annotated[Optional[StrictStr], Field(description="Filter transactions from date (RFC3339 format)")] = None, created_to : Annotated[Optional[StrictStr], Field(description="Filter transactions to date (RFC3339 format)")] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """Get credit transactions by organization ID  # noqa: E501
 
         Retrieve paginated list of credit transactions for the authenticated user's organization  # noqa: E501
@@ -99,10 +99,10 @@ class CreditsApi:
         :type page: int
         :param limit: Items per page (default: 20)
         :type limit: int
-        :param search: Search in description, file name, tier, or project name
+        :param search: Search in description, file name, model, or project name
         :type search: str
-        :param tier: Filter by tier
-        :type tier: str
+        :param model: Filter by model
+        :type model: str
         :param sort_by: Sort by field
         :type sort_by: str
         :param created_from: Filter transactions from date (RFC3339 format)
@@ -139,7 +139,7 @@ class CreditsApi:
             'page',
             'limit',
             'search',
-            'tier',
+            'model',
             'sort_by',
             'created_from',
             'created_to'
@@ -184,8 +184,8 @@ class CreditsApi:
         if _params.get('search') is not None:  # noqa: E501
             _query_params.append(('search', _params['search']))
 
-        if _params.get('tier') is not None:  # noqa: E501
-            _query_params.append(('tier', _params['tier']))
+        if _params.get('model') is not None:  # noqa: E501
+            _query_params.append(('model', _params['model']))
 
         if _params.get('sort_by') is not None:  # noqa: E501
             _query_params.append(('sort_by', _params['sort_by']))
@@ -234,7 +234,7 @@ class CreditsApi:
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    async def get_credit_transactions_by_team_id(self, team_id : Annotated[StrictStr, Field(..., description="Team ID")], page : Annotated[Optional[conint(strict=True, ge=1)], Field(description="Page number (default: 1)")] = None, limit : Annotated[Optional[conint(strict=True, le=100, ge=1)], Field(description="Items per page (default: 20)")] = None, search : Annotated[Optional[StrictStr], Field(description="Search in description, file name, or tier")] = None, tier : Annotated[Optional[StrictStr], Field(description="Filter by tier")] = None, sort_by : Annotated[Optional[StrictStr], Field(description="Sort by field")] = None, created_from : Annotated[Optional[StrictStr], Field(description="Filter transactions from date (RFC3339 format)")] = None, created_to : Annotated[Optional[StrictStr], Field(description="Filter transactions to date (RFC3339 format)")] = None, **kwargs) -> CreditsCreditTransactionsResponseCreditsCreditTransactionProjectResponse:  # noqa: E501
+    async def get_credit_transactions_by_team_id(self, team_id : Annotated[StrictStr, Field(..., description="Team ID")], page : Annotated[Optional[conint(strict=True, ge=1)], Field(description="Page number (default: 1)")] = None, limit : Annotated[Optional[conint(strict=True, le=100, ge=1)], Field(description="Items per page (default: 20)")] = None, search : Annotated[Optional[StrictStr], Field(description="Search in description, file name, or model")] = None, model : Annotated[Optional[StrictStr], Field(description="Filter by model")] = None, sort_by : Annotated[Optional[StrictStr], Field(description="Sort by field")] = None, created_from : Annotated[Optional[StrictStr], Field(description="Filter transactions from date (RFC3339 format)")] = None, created_to : Annotated[Optional[StrictStr], Field(description="Filter transactions to date (RFC3339 format)")] = None, **kwargs) -> CreditsCreditTransactionsResponseCreditsCreditTransactionProjectResponse:  # noqa: E501
         """Get credit transactions by team ID  # noqa: E501
 
         Retrieve paginated list of credit transactions for the authenticated user's team  # noqa: E501
@@ -245,10 +245,10 @@ class CreditsApi:
         :type page: int
         :param limit: Items per page (default: 20)
         :type limit: int
-        :param search: Search in description, file name, or tier
+        :param search: Search in description, file name, or model
         :type search: str
-        :param tier: Filter by tier
-        :type tier: str
+        :param model: Filter by model
+        :type model: str
         :param sort_by: Sort by field
         :type sort_by: str
         :param created_from: Filter transactions from date (RFC3339 format)
@@ -268,10 +268,10 @@ class CreditsApi:
         if '_preload_content' in kwargs:
             message = "Error! Please call the get_credit_transactions_by_team_id_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
             raise ValueError(message)
-        return await self.get_credit_transactions_by_team_id_with_http_info(team_id, page, limit, search, tier, sort_by, created_from, created_to, **kwargs)  # noqa: E501
+        return await self.get_credit_transactions_by_team_id_with_http_info(team_id, page, limit, search, model, sort_by, created_from, created_to, **kwargs)  # noqa: E501
 
     @validate_arguments
-    async def get_credit_transactions_by_team_id_with_http_info(self, team_id : Annotated[StrictStr, Field(..., description="Team ID")], page : Annotated[Optional[conint(strict=True, ge=1)], Field(description="Page number (default: 1)")] = None, limit : Annotated[Optional[conint(strict=True, le=100, ge=1)], Field(description="Items per page (default: 20)")] = None, search : Annotated[Optional[StrictStr], Field(description="Search in description, file name, or tier")] = None, tier : Annotated[Optional[StrictStr], Field(description="Filter by tier")] = None, sort_by : Annotated[Optional[StrictStr], Field(description="Sort by field")] = None, created_from : Annotated[Optional[StrictStr], Field(description="Filter transactions from date (RFC3339 format)")] = None, created_to : Annotated[Optional[StrictStr], Field(description="Filter transactions to date (RFC3339 format)")] = None, **kwargs) -> ApiResponse:  # noqa: E501
+    async def get_credit_transactions_by_team_id_with_http_info(self, team_id : Annotated[StrictStr, Field(..., description="Team ID")], page : Annotated[Optional[conint(strict=True, ge=1)], Field(description="Page number (default: 1)")] = None, limit : Annotated[Optional[conint(strict=True, le=100, ge=1)], Field(description="Items per page (default: 20)")] = None, search : Annotated[Optional[StrictStr], Field(description="Search in description, file name, or model")] = None, model : Annotated[Optional[StrictStr], Field(description="Filter by model")] = None, sort_by : Annotated[Optional[StrictStr], Field(description="Sort by field")] = None, created_from : Annotated[Optional[StrictStr], Field(description="Filter transactions from date (RFC3339 format)")] = None, created_to : Annotated[Optional[StrictStr], Field(description="Filter transactions to date (RFC3339 format)")] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """Get credit transactions by team ID  # noqa: E501
 
         Retrieve paginated list of credit transactions for the authenticated user's team  # noqa: E501
@@ -282,10 +282,10 @@ class CreditsApi:
         :type page: int
         :param limit: Items per page (default: 20)
         :type limit: int
-        :param search: Search in description, file name, or tier
+        :param search: Search in description, file name, or model
         :type search: str
-        :param tier: Filter by tier
-        :type tier: str
+        :param model: Filter by model
+        :type model: str
         :param sort_by: Sort by field
         :type sort_by: str
         :param created_from: Filter transactions from date (RFC3339 format)
@@ -322,7 +322,7 @@ class CreditsApi:
             'page',
             'limit',
             'search',
-            'tier',
+            'model',
             'sort_by',
             'created_from',
             'created_to'
@@ -367,8 +367,8 @@ class CreditsApi:
         if _params.get('search') is not None:  # noqa: E501
             _query_params.append(('search', _params['search']))
 
-        if _params.get('tier') is not None:  # noqa: E501
-            _query_params.append(('tier', _params['tier']))
+        if _params.get('model') is not None:  # noqa: E501
+            _query_params.append(('model', _params['model']))
 
         if _params.get('sort_by') is not None:  # noqa: E501
             _query_params.append(('sort_by', _params['sort_by']))

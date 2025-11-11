@@ -31,7 +31,8 @@ class ModelsListModelResponse(BaseModel):
     display_name: Optional[StrictStr] = None
     name: Optional[StrictStr] = None
     priority: Optional[StrictInt] = None
-    __properties = ["credits_per_page", "description", "display_name", "name", "priority"]
+    surcharge_per_page: Optional[StrictInt] = None
+    __properties = ["credits_per_page", "description", "display_name", "name", "priority", "surcharge_per_page"]
 
     class Config:
         """Pydantic configuration"""
@@ -73,7 +74,8 @@ class ModelsListModelResponse(BaseModel):
             "description": obj.get("description"),
             "display_name": obj.get("display_name"),
             "name": obj.get("name"),
-            "priority": obj.get("priority")
+            "priority": obj.get("priority"),
+            "surcharge_per_page": obj.get("surcharge_per_page")
         })
         return _obj
 

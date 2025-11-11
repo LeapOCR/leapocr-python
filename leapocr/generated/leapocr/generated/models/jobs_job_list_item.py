@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional, Union
-from pydantic import BaseModel, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, Field, StrictBool, StrictFloat, StrictInt, StrictStr
 
 class JobsJobListItem(BaseModel):
     """
@@ -30,9 +30,11 @@ class JobsJobListItem(BaseModel):
     completed_at: Optional[StrictStr] = None
     created_at: Optional[StrictStr] = None
     credits_used: Optional[StrictInt] = None
+    deleted_at: Optional[StrictStr] = None
     duration_seconds: Optional[Union[StrictFloat, StrictInt]] = None
     file_name: Optional[StrictStr] = None
     id: Optional[StrictStr] = None
+    is_deleted: Optional[StrictBool] = Field(default=None, description="Computed field for API convenience: true if DeletedAt != nil")
     processed_pages: Optional[StrictInt] = None
     processing_time: Optional[Union[StrictFloat, StrictInt]] = None
     result_format: Optional[StrictStr] = None
@@ -41,7 +43,7 @@ class JobsJobListItem(BaseModel):
     template_id: Optional[StrictStr] = None
     template_name: Optional[StrictStr] = None
     total_pages: Optional[StrictInt] = None
-    __properties = ["category", "completed_at", "created_at", "credits_used", "duration_seconds", "file_name", "id", "processed_pages", "processing_time", "result_format", "stage", "status", "template_id", "template_name", "total_pages"]
+    __properties = ["category", "completed_at", "created_at", "credits_used", "deleted_at", "duration_seconds", "file_name", "id", "is_deleted", "processed_pages", "processing_time", "result_format", "stage", "status", "template_id", "template_name", "total_pages"]
 
     class Config:
         """Pydantic configuration"""
@@ -83,9 +85,11 @@ class JobsJobListItem(BaseModel):
             "completed_at": obj.get("completed_at"),
             "created_at": obj.get("created_at"),
             "credits_used": obj.get("credits_used"),
+            "deleted_at": obj.get("deleted_at"),
             "duration_seconds": obj.get("duration_seconds"),
             "file_name": obj.get("file_name"),
             "id": obj.get("id"),
+            "is_deleted": obj.get("is_deleted"),
             "processed_pages": obj.get("processed_pages"),
             "processing_time": obj.get("processing_time"),
             "result_format": obj.get("result_format"),

@@ -119,25 +119,6 @@ async with LeapOCR("api-key") as client:
     data = result.pages[0].text  # JSON string with extracted data
 ```
 
-## Batch Processing
-
-```python
-async with LeapOCR("api-key") as client:
-    files = ["doc1.pdf", "doc2.pdf", "doc3.pdf"]
-
-    # Submit all files
-    jobs = []
-    for file in files:
-        job = await client.ocr.process_file(file)
-        jobs.append(job)
-
-    # Wait for all to complete
-    results = []
-    for job in jobs:
-        result = await client.ocr.process_and_wait(job.job_id)
-        results.append(result)
-```
-
 ## Error Handling
 
 ```python

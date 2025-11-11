@@ -74,18 +74,21 @@ Class | Method | HTTP request | Description
 *CreditsApi* | [**get_polar_products_catalog**](leapocr/generated/docs/CreditsApi.md#get_polar_products_catalog) | **GET** /credits/polar/products/catalog | Get Polar products catalog
 *HealthApi* | [**get_health_status**](leapocr/generated/docs/HealthApi.md#get_health_status) | **GET** /health | Get system health status
 *JobsApi* | [**cancel_job**](leapocr/generated/docs/JobsApi.md#cancel_job) | **POST** /jobs/{job_id}/cancel | Cancel OCR job
+*JobsApi* | [**delete_job**](leapocr/generated/docs/JobsApi.md#delete_job) | **DELETE** /ocr/delete/{job_id} | Delete OCR job
 *JobsApi* | [**get_job_status_simple**](leapocr/generated/docs/JobsApi.md#get_job_status_simple) | **GET** /jobs/{job_id}/status | Get job status with workflow details
 *JobsApi* | [**get_jobs_list**](leapocr/generated/docs/JobsApi.md#get_jobs_list) | **GET** /jobs/list | Get jobs list
 *JobsApi* | [**restart_job**](leapocr/generated/docs/JobsApi.md#restart_job) | **POST** /jobs/{job_id}/restart | Restart OCR job
 *JobsApi* | [**retry_job**](leapocr/generated/docs/JobsApi.md#retry_job) | **POST** /jobs/{job_id}/retry | Retry OCR job
 *ModelsApi* | [**list_ocr_models**](leapocr/generated/docs/ModelsApi.md#list_ocr_models) | **GET** /ocr/models | List available OCR models
 *OCRApi* | [**complete_direct_upload**](leapocr/generated/docs/OCRApi.md#complete_direct_upload) | **POST** /ocr/uploads/{job_id}/complete | Complete direct upload
+*OCRApi* | [**delete_job**](leapocr/generated/docs/OCRApi.md#delete_job) | **DELETE** /ocr/delete/{job_id} | Delete OCR job
 *OCRApi* | [**direct_upload**](leapocr/generated/docs/OCRApi.md#direct_upload) | **POST** /ocr/uploads/direct | Direct upload
 *OCRApi* | [**get_job_result**](leapocr/generated/docs/OCRApi.md#get_job_result) | **GET** /ocr/result/{job_id} | Get OCR job result
 *OCRApi* | [**get_job_status**](leapocr/generated/docs/OCRApi.md#get_job_status) | **GET** /ocr/status/{job_id} | Get OCR job status
 *OCRApi* | [**list_ocr_models**](leapocr/generated/docs/OCRApi.md#list_ocr_models) | **GET** /ocr/models | List available OCR models
 *OCRApi* | [**upload_from_remote_url**](leapocr/generated/docs/OCRApi.md#upload_from_remote_url) | **POST** /ocr/uploads/url | Remote URL upload
 *SDKApi* | [**complete_direct_upload**](leapocr/generated/docs/SDKApi.md#complete_direct_upload) | **POST** /ocr/uploads/{job_id}/complete | Complete direct upload
+*SDKApi* | [**delete_job**](leapocr/generated/docs/SDKApi.md#delete_job) | **DELETE** /ocr/delete/{job_id} | Delete OCR job
 *SDKApi* | [**direct_upload**](leapocr/generated/docs/SDKApi.md#direct_upload) | **POST** /ocr/uploads/direct | Direct upload
 *SDKApi* | [**get_job_result**](leapocr/generated/docs/SDKApi.md#get_job_result) | **GET** /ocr/result/{job_id} | Get OCR job result
 *SDKApi* | [**get_job_status**](leapocr/generated/docs/SDKApi.md#get_job_status) | **GET** /ocr/status/{job_id} | Get OCR job status

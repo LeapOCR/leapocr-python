@@ -30,7 +30,8 @@ class AnalyticsModelUsageStat(BaseModel):
     jobs_processed: Optional[StrictInt] = None
     model: Optional[StrictStr] = None
     transactions: Optional[StrictInt] = None
-    __properties = ["credits_consumed", "jobs_processed", "model", "transactions"]
+    user_id: Optional[StrictStr] = None
+    __properties = ["credits_consumed", "jobs_processed", "model", "transactions", "user_id"]
 
     class Config:
         """Pydantic configuration"""
@@ -71,7 +72,8 @@ class AnalyticsModelUsageStat(BaseModel):
             "credits_consumed": obj.get("credits_consumed"),
             "jobs_processed": obj.get("jobs_processed"),
             "model": obj.get("model"),
-            "transactions": obj.get("transactions")
+            "transactions": obj.get("transactions"),
+            "user_id": obj.get("user_id")
         })
         return _obj
 

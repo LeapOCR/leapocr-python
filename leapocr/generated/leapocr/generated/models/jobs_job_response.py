@@ -29,6 +29,7 @@ class JobsJobResponse(BaseModel):
     completed_at: Optional[StrictStr] = None
     created_at: Optional[StrictStr] = None
     credits_used: Optional[StrictInt] = None
+    deleted_at: Optional[StrictStr] = None
     error_message: Optional[StrictStr] = None
     file_name: Optional[StrictStr] = None
     file_size: Optional[StrictInt] = None
@@ -42,7 +43,7 @@ class JobsJobResponse(BaseModel):
     total_pages: Optional[StrictInt] = None
     updated_at: Optional[StrictStr] = None
     user_id: Optional[StrictStr] = None
-    __properties = ["completed_at", "created_at", "credits_used", "error_message", "file_name", "file_size", "id", "metadata", "processed_pages", "status", "team_id", "template_id", "template_name", "total_pages", "updated_at", "user_id"]
+    __properties = ["completed_at", "created_at", "credits_used", "deleted_at", "error_message", "file_name", "file_size", "id", "metadata", "processed_pages", "status", "team_id", "template_id", "template_name", "total_pages", "updated_at", "user_id"]
 
     class Config:
         """Pydantic configuration"""
@@ -83,6 +84,7 @@ class JobsJobResponse(BaseModel):
             "completed_at": obj.get("completed_at"),
             "created_at": obj.get("created_at"),
             "credits_used": obj.get("credits_used"),
+            "deleted_at": obj.get("deleted_at"),
             "error_message": obj.get("error_message"),
             "file_name": obj.get("file_name"),
             "file_size": obj.get("file_size"),
