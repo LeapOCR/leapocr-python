@@ -595,26 +595,26 @@ pytest tests/ --cov=leapocr --cov-report=html
 
 ```
 leapocr-python/
-   leapocr/               # Main package
-      __init__.py        # Public API
-      client.py          # Main client class
-      ocr.py             # OCR service
-      models.py          # Data models
-      errors.py          # Error classes
-      config.py          # Configuration
-      _internal/         # Internal utilities
-         retry.py       # Retry logic
-         upload.py      # File upload
-         polling.py     # Status polling
-         validation.py  # Input validation
-         utils.py       # Common utilities
-      generated/         # Generated OpenAPI client
-   tests/
-      unit/              # Unit tests
-      integration/       # Integration tests
-   examples/              # Usage examples
-   scripts/               # Development scripts
-   Makefile               # Common development tasks
+├── leapocr/               # Main package
+│   ├── __init__.py        # Public API
+│   ├── client.py          # Main client class
+│   ├── ocr.py             # OCR service
+│   ├── models.py          # Data models
+│   ├── errors.py          # Error classes
+│   ├── config.py          # Configuration
+│   ├── _internal/         # Internal utilities
+│   │   ├── retry.py       # Retry logic
+│   │   ├── upload.py      # File upload
+│   │   ├── polling.py     # Status polling
+│   │   ├── validation.py  # Input validation
+│   │   └── utils.py       # Common utilities
+│   └── generated/         # Generated OpenAPI client
+├── tests/
+│   ├── unit/              # Unit tests
+│   └── integration/       # Integration tests
+├── examples/              # Usage examples
+├── scripts/               # Development scripts
+└── Makefile               # Common development tasks
 ```
 
 ## Contributing
