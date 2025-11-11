@@ -15,7 +15,7 @@ Example:
     >>> asyncio.run(main())
 """
 
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 
 # Core client
 from .client import LeapOCR
