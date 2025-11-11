@@ -1,3 +1,14 @@
+## [0.0.2] - ${DATE}
+
+- gen (1040bb7)
+- Add template usage and job management examples in documentation (1c08c01)
+- deleting unused stuff (9f4fc82)
+- Release version 0.0.2 with significant updates (fc7e835)
+- Update project configuration and documentation (4075175)
+- fixing readme (f3f9e28)
+- Update Python version requirements in README and pyproject.toml (029f12c)
+- Update CI workflow to include 'dev' extra dependencies (49d402d)
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
