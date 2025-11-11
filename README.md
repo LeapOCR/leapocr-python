@@ -1,7 +1,7 @@
 # LeapOCR Python SDK
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/leapocr/leapocr-python/main/logo/web-app-manifest-512x512.png" alt="LeapOCR Logo" width="200" height="200">
+  <img src="https://raw.githubusercontent.com/LeapOCR/leapocr-python/refs/heads/main/logo/web-app-manifest-512x512.png" alt="LeapOCR Logo" width="200" height="200">
 </div>
 
 <div align="center">
