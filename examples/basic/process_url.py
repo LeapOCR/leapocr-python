@@ -65,15 +65,25 @@ async def main():
 
                 print("\n✓ Processing completed successfully!")
                 print(f"  Credits used: {final_result.credits_used}")
-                print(f"  Processing time: {final_result.processing_time_seconds:.2f}s")
                 print(f"  Pages processed: {len(final_result.pages)}")
-                print(f"  Text length: {sum(len(p.text) for p in final_result.pages)} characters")
 
-                # Print text preview from first page
+                # Calculate total text length (for markdown format)
+                total_length = sum(
+                    len(p.result) if isinstance(p.result, str) else 0 for p in final_result.pages
+                )
+                if total_length > 0:
+                    print(f"  Text length: {total_length} characters")
+
+                # Print result preview from first page
                 if final_result.pages:
-                    text = final_result.pages[0].text
-                    preview = text[:300] + "..." if len(text) > 300 else text
-                    print(f"\nText preview:\n{preview}")
+                    first_result = final_result.pages[0].result
+                    if isinstance(first_result, str):
+                        preview = (
+                            first_result[:300] + "..." if len(first_result) > 300 else first_result
+                        )
+                        print(f"\nText preview:\n{preview}")
+                    else:
+                        print(f"\nStructured result:\n{first_result}")
 
                 return
 

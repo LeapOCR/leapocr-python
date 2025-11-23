@@ -59,7 +59,6 @@ async def main():
             print(f"  File: {result.file_name}")
             print(f"  Pages: {len(result.pages)}")
             print(f"  Credits used: {result.credits_used}")
-            print(f"  Processing time: {result.processing_time_seconds:.2f}s")
             print()
 
         # Example 4: Delete job when no longer needed

@@ -9,6 +9,7 @@ leapocr/generated/api/health_api.py
 leapocr/generated/api/jobs_api.py
 leapocr/generated/api/models_api.py
 leapocr/generated/api/ocr_api.py
+leapocr/generated/api/onboarding_api.py
 leapocr/generated/api/sdk_api.py
 leapocr/generated/api/templates_api.py
 leapocr/generated/api/upload_api.py
@@ -56,8 +57,6 @@ leapocr/generated/models/jobs_job_response.py
 leapocr/generated/models/jobs_job_status_response.py
 leapocr/generated/models/jobs_jobs_list_response.py
 leapocr/generated/models/jobs_pagination_info.py
-leapocr/generated/models/jobs_restart_job_request.py
-leapocr/generated/models/jobs_retry_job_request.py
 leapocr/generated/models/jobs_workflow_job_status_info.py
 leapocr/generated/models/jobs_workflow_progress_info.py
 leapocr/generated/models/jobs_workflow_status_info.py
@@ -65,9 +64,11 @@ leapocr/generated/models/models_list_model_response.py
 leapocr/generated/models/models_list_models_list_response.py
 leapocr/generated/models/models_ocr_result_response.py
 leapocr/generated/models/models_ocr_status_response.py
-leapocr/generated/models/models_page_metadata.py
 leapocr/generated/models/models_page_response.py
 leapocr/generated/models/models_pagination_response.py
+leapocr/generated/models/onboarding_create_onboarding_request.py
+leapocr/generated/models/onboarding_onboarding_status.py
+leapocr/generated/models/onboarding_update_onboarding_request.py
 leapocr/generated/models/response_error_message.py
 leapocr/generated/models/response_error_response.py
 leapocr/generated/models/status_response.py

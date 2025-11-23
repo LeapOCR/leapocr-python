@@ -85,12 +85,9 @@ async def main():
         if successful:
             total_credits = sum(result.credits_used for _, result in successful)
             total_pages = sum(len(result.pages) for _, result in successful)
-            total_time = sum(result.processing_time_seconds for _, result in successful)
 
             print(f"\nTotal credits used: {total_credits}")
             print(f"Total pages processed: {total_pages}")
-            print(f"Total processing time: {total_time:.2f}s")
-            print(f"Average time per document: {total_time / len(successful):.2f}s")
 
         if failed:
             print("\nFailed documents:")

@@ -30,6 +30,7 @@ __all__ = [
     "UploadApi",
     "WebhooksApi",
     "AnalyticsApi",
+    "OnboardingApi",
     "ApiResponse",
     "ApiClient",
     "Configuration",
@@ -77,8 +78,6 @@ __all__ = [
     "JobsJobStatusResponse",
     "JobsJobsListResponse",
     "JobsPaginationInfo",
-    "JobsRestartJobRequest",
-    "JobsRetryJobRequest",
     "JobsWorkflowJobStatusInfo",
     "JobsWorkflowProgressInfo",
     "JobsWorkflowStatusInfo",
@@ -86,9 +85,11 @@ __all__ = [
     "ModelsListModelsListResponse",
     "ModelsOCRResultResponse",
     "ModelsOCRStatusResponse",
-    "ModelsPageMetadata",
     "ModelsPageResponse",
     "ModelsPaginationResponse",
+    "OnboardingCreateOnboardingRequest",
+    "OnboardingOnboardingStatus",
+    "OnboardingUpdateOnboardingRequest",
     "ResponseErrorMessage",
     "ResponseErrorResponse",
     "StatusResponse",
@@ -120,6 +121,7 @@ from leapocr.generated.api.templates_api import TemplatesApi as TemplatesApi
 from leapocr.generated.api.upload_api import UploadApi as UploadApi
 from leapocr.generated.api.webhooks_api import WebhooksApi as WebhooksApi
 from leapocr.generated.api.analytics_api import AnalyticsApi as AnalyticsApi
+from leapocr.generated.api.onboarding_api import OnboardingApi as OnboardingApi
 
 # import ApiClient
 from leapocr.generated.api_response import ApiResponse as ApiResponse
@@ -171,8 +173,6 @@ from leapocr.generated.models.jobs_job_response import JobsJobResponse as JobsJo
 from leapocr.generated.models.jobs_job_status_response import JobsJobStatusResponse as JobsJobStatusResponse
 from leapocr.generated.models.jobs_jobs_list_response import JobsJobsListResponse as JobsJobsListResponse
 from leapocr.generated.models.jobs_pagination_info import JobsPaginationInfo as JobsPaginationInfo
-from leapocr.generated.models.jobs_restart_job_request import JobsRestartJobRequest as JobsRestartJobRequest
-from leapocr.generated.models.jobs_retry_job_request import JobsRetryJobRequest as JobsRetryJobRequest
 from leapocr.generated.models.jobs_workflow_job_status_info import JobsWorkflowJobStatusInfo as JobsWorkflowJobStatusInfo
 from leapocr.generated.models.jobs_workflow_progress_info import JobsWorkflowProgressInfo as JobsWorkflowProgressInfo
 from leapocr.generated.models.jobs_workflow_status_info import JobsWorkflowStatusInfo as JobsWorkflowStatusInfo
@@ -180,9 +180,11 @@ from leapocr.generated.models.models_list_model_response import ModelsListModelR
 from leapocr.generated.models.models_list_models_list_response import ModelsListModelsListResponse as ModelsListModelsListResponse
 from leapocr.generated.models.models_ocr_result_response import ModelsOCRResultResponse as ModelsOCRResultResponse
 from leapocr.generated.models.models_ocr_status_response import ModelsOCRStatusResponse as ModelsOCRStatusResponse
-from leapocr.generated.models.models_page_metadata import ModelsPageMetadata as ModelsPageMetadata
 from leapocr.generated.models.models_page_response import ModelsPageResponse as ModelsPageResponse
 from leapocr.generated.models.models_pagination_response import ModelsPaginationResponse as ModelsPaginationResponse
+from leapocr.generated.models.onboarding_create_onboarding_request import OnboardingCreateOnboardingRequest as OnboardingCreateOnboardingRequest
+from leapocr.generated.models.onboarding_onboarding_status import OnboardingOnboardingStatus as OnboardingOnboardingStatus
+from leapocr.generated.models.onboarding_update_onboarding_request import OnboardingUpdateOnboardingRequest as OnboardingUpdateOnboardingRequest
 from leapocr.generated.models.response_error_message import ResponseErrorMessage as ResponseErrorMessage
 from leapocr.generated.models.response_error_response import ResponseErrorResponse as ResponseErrorResponse
 from leapocr.generated.models.status_response import StatusResponse as StatusResponse

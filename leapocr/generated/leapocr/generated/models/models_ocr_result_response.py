@@ -19,8 +19,8 @@ import re  # noqa: F401
 import json
 
 
-from typing import List, Optional, Union
-from pydantic import BaseModel, StrictFloat, StrictInt, StrictStr, conlist
+from typing import List, Optional
+from pydantic import BaseModel, StrictInt, StrictStr, conlist
 from leapocr.generated.models.models_page_response import ModelsPageResponse
 from leapocr.generated.models.models_pagination_response import ModelsPaginationResponse
 
@@ -36,11 +36,10 @@ class ModelsOCRResultResponse(BaseModel):
     pages: Optional[conlist(ModelsPageResponse)] = None
     pagination: Optional[ModelsPaginationResponse] = None
     processed_pages: Optional[StrictInt] = None
-    processing_time_seconds: Optional[Union[StrictFloat, StrictInt]] = None
     result_format: Optional[StrictStr] = None
     status: Optional[StrictStr] = None
     total_pages: Optional[StrictInt] = None
-    __properties = ["completed_at", "credits_used", "file_name", "job_id", "model", "pages", "pagination", "processed_pages", "processing_time_seconds", "result_format", "status", "total_pages"]
+    __properties = ["completed_at", "credits_used", "file_name", "job_id", "model", "pages", "pagination", "processed_pages", "result_format", "status", "total_pages"]
 
     class Config:
         """Pydantic configuration"""
@@ -96,7 +95,6 @@ class ModelsOCRResultResponse(BaseModel):
             "pages": [ModelsPageResponse.from_dict(_item) for _item in obj.get("pages")] if obj.get("pages") is not None else None,
             "pagination": ModelsPaginationResponse.from_dict(obj.get("pagination")) if obj.get("pagination") is not None else None,
             "processed_pages": obj.get("processed_pages"),
-            "processing_time_seconds": obj.get("processing_time_seconds"),
             "result_format": obj.get("result_format"),
             "status": obj.get("status"),
             "total_pages": obj.get("total_pages")

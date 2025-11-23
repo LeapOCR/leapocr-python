@@ -111,14 +111,18 @@ async def main():
 
             print("\n✓ Extraction completed successfully!")
             print(f"  Credits used: {result.credits_used}")
-            print(f"  Processing time: {result.processing_time_seconds:.2f}s")
             print(f"  Pages processed: {len(result.pages)}")
 
             # Parse and display extracted data
             if result.pages:
-                # The structured data is in the text field as JSON
+                # The structured data is in the result field (can be dict or JSON string)
                 try:
-                    extracted_data = json.loads(result.pages[0].text)
+                    page_result = result.pages[0].result
+                    # Handle both dict (already parsed) and string (JSON)
+                    if isinstance(page_result, dict):
+                        extracted_data = page_result
+                    else:
+                        extracted_data = json.loads(page_result)
 
                     print("\n" + "=" * 50)
                     print("EXTRACTED INVOICE DATA")
@@ -151,9 +155,9 @@ async def main():
                     print("\nFull extracted data (JSON):")
                     print(json.dumps(extracted_data, indent=2))
 
-                except json.JSONDecodeError:
-                    print("\nExtracted text (not JSON):")
-                    print(result.pages[0].text[:500])
+                except (json.JSONDecodeError, TypeError):
+                    print("\nExtracted result:")
+                    print(str(result.pages[0].result)[:500])
 
         except Exception as e:
             print(f"\n✗ Extraction failed: {e}")

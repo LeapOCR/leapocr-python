@@ -39,12 +39,12 @@ install:
 	uv sync --no-dev
 
 dev-install:
-	uv sync
+	uv sync --extra dev
 
 # Code Generation
 fetch-spec:
 	@echo "Downloading OpenAPI spec from API..."
-	curl -s -o openapi.json http://localhost:8080/api/v1/docs/openapi.json
+	curl -s -o openapi.json http://localhost:8443/api/v1/docs/openapi.json
 	@echo "✓ Downloaded to openapi.json"
 
 generate: fetch-spec

@@ -19,7 +19,6 @@ from .models import (
     JobStatus,
     JobStatusType,
     Model,
-    PageMetadata,
     PageResult,
     PaginationInfo,
     PollOptions,
@@ -240,13 +239,7 @@ class OCRService:
         pages = [
             PageResult(
                 page_number=p["page_number"],
-                text=p["text"],
-                metadata=PageMetadata(
-                    processing_ms=p.get("metadata", {}).get("processing_ms"),
-                    retry_count=p.get("metadata", {}).get("retry_count"),
-                    extra=p.get("metadata", {}).get("extra", {}),
-                ),
-                processed_at=parse_datetime(p["processed_at"]),
+                result=p["result"],
                 id=p.get("id"),
             )
             for p in data.get("pages", [])
@@ -267,7 +260,6 @@ class OCRService:
             file_name=data["file_name"],
             total_pages=data["total_pages"],
             processed_pages=data["processed_pages"],
-            processing_time_seconds=data["processing_time_seconds"],
             credits_used=data["credits_used"],
             model=data["model"],
             result_format=data["result_format"],

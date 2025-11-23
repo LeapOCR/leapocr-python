@@ -8,7 +8,6 @@ from leapocr.models import (
     JobStatus,
     JobStatusType,
     Model,
-    PageMetadata,
     PageResult,
     PaginationInfo,
     PollOptions,
@@ -222,64 +221,38 @@ class TestJobStatus:
         assert status.error_message == "Processing failed: Invalid PDF"
 
 
-class TestPageMetadata:
-    """Tests for PageMetadata dataclass."""
-
-    def test_page_metadata_empty(self):
-        metadata = PageMetadata()
-        assert metadata.processing_ms is None
-        assert metadata.retry_count is None
-        assert metadata.extra == {}
-
-    def test_page_metadata_with_values(self):
-        extra = {"confidence": 0.95, "language": "en"}
-        metadata = PageMetadata(processing_ms=1500, retry_count=2, extra=extra)
-
-        assert metadata.processing_ms == 1500
-        assert metadata.retry_count == 2
-        assert metadata.extra == extra
-
-    def test_metadata_extra_default_factory(self):
-        """Each instance should get its own extra dict."""
-        meta1 = PageMetadata()
-        meta2 = PageMetadata()
-
-        meta1.extra["key1"] = "value1"
-        meta2.extra["key2"] = "value2"
-
-        assert "key1" in meta1.extra
-        assert "key1" not in meta2.extra
-
-
 class TestPageResult:
     """Tests for PageResult dataclass."""
 
-    def test_page_result(self):
-        processed_at = datetime.now()
-        metadata = PageMetadata(processing_ms=1200)
-
+    def test_page_result_string(self):
+        """Test PageResult with string result (markdown)."""
         page = PageResult(
             page_number=1,
-            text="Page 1 content",
-            metadata=metadata,
-            processed_at=processed_at,
+            result="Page 1 content",
         )
 
         assert page.page_number == 1
-        assert page.text == "Page 1 content"
-        assert page.metadata == metadata
-        assert page.processed_at == processed_at
+        assert page.result == "Page 1 content"
+        assert isinstance(page.result, str)
+        assert page.id is None
+
+    def test_page_result_dict(self):
+        """Test PageResult with dict result (structured)."""
+        result_data = {"title": "Invoice", "amount": 100.50}
+        page = PageResult(
+            page_number=1,
+            result=result_data,
+        )
+
+        assert page.page_number == 1
+        assert page.result == result_data
+        assert isinstance(page.result, dict)
         assert page.id is None
 
     def test_page_result_with_id(self):
-        processed_at = datetime.now()
-        metadata = PageMetadata()
-
         page = PageResult(
             page_number=1,
-            text="Content",
-            metadata=metadata,
-            processed_at=processed_at,
+            result="Content",
             id="page-abc123",
         )
 
@@ -303,21 +276,10 @@ class TestJobResult:
 
     def test_job_result_complete(self):
         completed_at = datetime.now()
-        processed_at = datetime.now()
 
         pages = [
-            PageResult(
-                page_number=1,
-                text="Page 1",
-                metadata=PageMetadata(processing_ms=1000),
-                processed_at=processed_at,
-            ),
-            PageResult(
-                page_number=2,
-                text="Page 2",
-                metadata=PageMetadata(processing_ms=1100),
-                processed_at=processed_at,
-            ),
+            PageResult(page_number=1, result="Page 1"),
+            PageResult(page_number=2, result="Page 2"),
         ]
 
         pagination = PaginationInfo(page=1, limit=100, total=2, total_pages=1)
@@ -329,7 +291,6 @@ class TestJobResult:
             file_name="document.pdf",
             total_pages=2,
             processed_pages=2,
-            processing_time_seconds=2.5,
             credits_used=4,
             model="standard-v1",
             result_format="structured",
@@ -343,7 +304,6 @@ class TestJobResult:
         assert result.file_name == "document.pdf"
         assert result.total_pages == 2
         assert result.processed_pages == 2
-        assert result.processing_time_seconds == 2.5
         assert result.credits_used == 4
         assert result.model == "standard-v1"
         assert result.result_format == "structured"
@@ -352,23 +312,14 @@ class TestJobResult:
 
     def test_job_result_without_pagination(self):
         completed_at = datetime.now()
-        processed_at = datetime.now()
 
         result = JobResult(
             job_id="job-123",
             status=JobStatusType.COMPLETED,
-            pages=[
-                PageResult(
-                    page_number=1,
-                    text="Content",
-                    metadata=PageMetadata(),
-                    processed_at=processed_at,
-                )
-            ],
+            pages=[PageResult(page_number=1, result="Content")],
             file_name="test.pdf",
             total_pages=1,
             processed_pages=1,
-            processing_time_seconds=1.2,
             credits_used=2,
             model="standard-v1",
             result_format="markdown",

@@ -19,16 +19,17 @@ import re  # noqa: F401
 import json
 
 
-from typing import Optional
-from pydantic import BaseModel, Field, StrictBool
+from typing import Any, List, Optional
+from pydantic import BaseModel, StrictStr, conlist
 
-class JobsRestartJobRequest(BaseModel):
+class OnboardingUpdateOnboardingRequest(BaseModel):
     """
-    JobsRestartJobRequest
+    OnboardingUpdateOnboardingRequest
     """
-    force: Optional[StrictBool] = Field(default=None, description="Force restart even for completed jobs")
-    preserve_progress: Optional[StrictBool] = Field(default=None, description="Keep existing progress when restarting")
-    __properties = ["force", "preserve_progress"]
+    completed_at: Optional[StrictStr] = None
+    metadata: Optional[Any] = None
+    steps_completed: Optional[conlist(StrictStr)] = None
+    __properties = ["completed_at", "metadata", "steps_completed"]
 
     class Config:
         """Pydantic configuration"""
@@ -44,8 +45,8 @@ class JobsRestartJobRequest(BaseModel):
         return json.dumps(self.to_dict())
 
     @classmethod
-    def from_json(cls, json_str: str) -> JobsRestartJobRequest:
-        """Create an instance of JobsRestartJobRequest from a JSON string"""
+    def from_json(cls, json_str: str) -> OnboardingUpdateOnboardingRequest:
+        """Create an instance of OnboardingUpdateOnboardingRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self):
@@ -54,19 +55,25 @@ class JobsRestartJobRequest(BaseModel):
                           exclude={
                           },
                           exclude_none=True)
+        # set to None if metadata (nullable) is None
+        # and __fields_set__ contains the field
+        if self.metadata is None and "metadata" in self.__fields_set__:
+            _dict['metadata'] = None
+
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: dict) -> JobsRestartJobRequest:
-        """Create an instance of JobsRestartJobRequest from a dict"""
+    def from_dict(cls, obj: dict) -> OnboardingUpdateOnboardingRequest:
+        """Create an instance of OnboardingUpdateOnboardingRequest from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return JobsRestartJobRequest.parse_obj(obj)
+            return OnboardingUpdateOnboardingRequest.parse_obj(obj)
 
-        _obj = JobsRestartJobRequest.parse_obj({
-            "force": obj.get("force"),
-            "preserve_progress": obj.get("preserve_progress")
+        _obj = OnboardingUpdateOnboardingRequest.parse_obj({
+            "completed_at": obj.get("completed_at"),
+            "metadata": obj.get("metadata"),
+            "steps_completed": obj.get("steps_completed")
         })
         return _obj

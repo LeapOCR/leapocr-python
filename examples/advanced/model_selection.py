@@ -30,7 +30,6 @@ async def main():
 
         print("✓ Standard model processing complete")
         print(f"  Credits used: {standard_result.credits_used}")
-        print(f"  Processing time: {standard_result.processing_time_seconds:.2f}s")
         print()
 
         # Example 2: English Pro model (high accuracy for English, 2 credits per page)
@@ -47,7 +46,6 @@ async def main():
 
         print("✓ English Pro model processing complete")
         print(f"  Credits used: {english_pro_result.credits_used}")
-        print(f"  Processing time: {english_pro_result.processing_time_seconds:.2f}s")
         print()
 
         # Example 3: Pro model (premium multilingual, 2 credits per page)
@@ -64,7 +62,6 @@ async def main():
 
         print("✓ Pro model processing complete")
         print(f"  Credits used: {pro_result.credits_used}")
-        print(f"  Processing time: {pro_result.processing_time_seconds:.2f}s")
         print()
 
         # Example 4: Custom model (organization-specific)
@@ -102,7 +99,6 @@ async def main():
         for result in results:
             print(f"  {result.model}:")
             print(f"    Credits: {result.credits_used}")
-            print(f"    Time: {result.processing_time_seconds:.2f}s")
             print(f"    Pages: {result.processed_pages}")
 
 

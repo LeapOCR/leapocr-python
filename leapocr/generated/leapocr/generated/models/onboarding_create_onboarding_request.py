@@ -19,16 +19,18 @@ import re  # noqa: F401
 import json
 
 
-from typing import Optional
-from pydantic import BaseModel, Field, StrictBool
+from typing import Any, List, Optional
+from pydantic import BaseModel, StrictStr, conlist
 
-class JobsRetryJobRequest(BaseModel):
+class OnboardingCreateOnboardingRequest(BaseModel):
     """
-    JobsRetryJobRequest
+    OnboardingCreateOnboardingRequest
     """
-    force: Optional[StrictBool] = Field(default=None, description="Force retry even if job appears active")
-    reset_pages: Optional[StrictBool] = Field(default=None, description="Reset page processing status")
-    __properties = ["force", "reset_pages"]
+    entity_type: Optional[StrictStr] = None
+    external_id: Optional[StrictStr] = None
+    metadata: Optional[Any] = None
+    steps_completed: Optional[conlist(StrictStr)] = None
+    __properties = ["entity_type", "external_id", "metadata", "steps_completed"]
 
     class Config:
         """Pydantic configuration"""
@@ -44,8 +46,8 @@ class JobsRetryJobRequest(BaseModel):
         return json.dumps(self.to_dict())
 
     @classmethod
-    def from_json(cls, json_str: str) -> JobsRetryJobRequest:
-        """Create an instance of JobsRetryJobRequest from a JSON string"""
+    def from_json(cls, json_str: str) -> OnboardingCreateOnboardingRequest:
+        """Create an instance of OnboardingCreateOnboardingRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self):
@@ -54,19 +56,26 @@ class JobsRetryJobRequest(BaseModel):
                           exclude={
                           },
                           exclude_none=True)
+        # set to None if metadata (nullable) is None
+        # and __fields_set__ contains the field
+        if self.metadata is None and "metadata" in self.__fields_set__:
+            _dict['metadata'] = None
+
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: dict) -> JobsRetryJobRequest:
-        """Create an instance of JobsRetryJobRequest from a dict"""
+    def from_dict(cls, obj: dict) -> OnboardingCreateOnboardingRequest:
+        """Create an instance of OnboardingCreateOnboardingRequest from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return JobsRetryJobRequest.parse_obj(obj)
+            return OnboardingCreateOnboardingRequest.parse_obj(obj)
 
-        _obj = JobsRetryJobRequest.parse_obj({
-            "force": obj.get("force"),
-            "reset_pages": obj.get("reset_pages")
+        _obj = OnboardingCreateOnboardingRequest.parse_obj({
+            "entity_type": obj.get("entity_type"),
+            "external_id": obj.get("external_id"),
+            "metadata": obj.get("metadata"),
+            "steps_completed": obj.get("steps_completed")
         })
         return _obj

@@ -57,21 +57,23 @@ async def main():
         # Print results
         print("\n✓ Processing completed successfully!")
         print(f"  Credits used: {result.credits_used}")
-        print(f"  Processing time: {result.processing_time_seconds:.2f}s")
         print(f"  Pages processed: {len(result.pages)}")
         print(f"  File name: {result.file_name}")
         print(f"  Model used: {result.model}")
 
-        # Print first page text (truncated)
+        # Print first page result (truncated)
         if result.pages:
             first_page = result.pages[0]
-            text_preview = (
-                first_page.text[:200] + "..." if len(first_page.text) > 200 else first_page.text
-            )
-            print(f"\nFirst page text preview:\n{text_preview}")
-
-            if first_page.metadata.processing_ms:
-                print(f"\nFirst page processing time: {first_page.metadata.processing_ms}ms")
+            # Handle both string (markdown) and dict (structured) results
+            if isinstance(first_page.result, str):
+                text_preview = (
+                    first_page.result[:200] + "..."
+                    if len(first_page.result) > 200
+                    else first_page.result
+                )
+                print(f"\nFirst page result preview:\n{text_preview}")
+            else:
+                print(f"\nFirst page structured result:\n{first_page.result}")
 
 
 if __name__ == "__main__":

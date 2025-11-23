@@ -85,7 +85,6 @@ async def main():
 
             print("\n✓ Processing completed!")
             print(f"  Credits used: {result.credits_used}")
-            print(f"  Processing time: {result.processing_time_seconds:.2f}s")
             print(f"  Pages: {len(result.pages)}")
             print(f"  Format: {result.result_format}")
 

@@ -2,7 +2,7 @@
 
 These tests require:
 1. LEAPOCR_API_KEY environment variable
-2. OCR API server running (default: http://localhost:8080/api/v1)
+2. OCR API server running (default: http://localhost:8443/api/v1)
 3. Optional: TEST_PDF_PATH environment variable pointing to a test PDF file
 
 Run with: pytest tests/integration/ -v
@@ -59,7 +59,7 @@ def create_test_client() -> LeapOCR:
     if not api_key:
         pytest.skip("LEAPOCR_API_KEY environment variable not set")
 
-    base_url = os.getenv("OCR_BASE_URL", "http://localhost:8080/api/v1")
+    base_url = os.getenv("OCR_BASE_URL", "http://localhost:8443/api/v1")
 
     config = ClientConfig(
         base_url=base_url,
@@ -122,12 +122,15 @@ async def test_process_file_direct_upload():
 
         print("Processing completed successfully!")
         print(f"Credits used: {final_result.credits_used}")
-        print(f"Processing time: {final_result.processing_time_seconds}s")
         print(f"Pages processed: {len(final_result.pages)}")
 
         if final_result.pages:
             first_page = final_result.pages[0]
-            print(f"First page text length: {len(first_page.text)} characters")
+            # Handle both string (markdown) and dict (structured) results
+            if isinstance(first_page.result, str):
+                print(f"First page result length: {len(first_page.result)} characters")
+            else:
+                print(f"First page result: {first_page.result}")
 
 
 @pytest.mark.integration

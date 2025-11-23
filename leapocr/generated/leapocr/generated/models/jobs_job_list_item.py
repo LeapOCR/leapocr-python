@@ -26,6 +26,7 @@ class JobsJobListItem(BaseModel):
     """
     JobsJobListItem
     """
+    base_credits: Optional[StrictInt] = None
     category: Optional[StrictStr] = None
     completed_at: Optional[StrictStr] = None
     created_at: Optional[StrictStr] = None
@@ -35,15 +36,17 @@ class JobsJobListItem(BaseModel):
     file_name: Optional[StrictStr] = None
     id: Optional[StrictStr] = None
     is_deleted: Optional[StrictBool] = Field(default=None, description="Computed field for API convenience: true if DeletedAt != nil")
+    model: Optional[StrictStr] = None
     processed_pages: Optional[StrictInt] = None
     processing_time: Optional[Union[StrictFloat, StrictInt]] = None
     result_format: Optional[StrictStr] = None
     stage: Optional[StrictStr] = None
     status: Optional[StrictStr] = None
+    surcharge_credits: Optional[StrictInt] = None
     template_id: Optional[StrictStr] = None
     template_name: Optional[StrictStr] = None
     total_pages: Optional[StrictInt] = None
-    __properties = ["category", "completed_at", "created_at", "credits_used", "deleted_at", "duration_seconds", "file_name", "id", "is_deleted", "processed_pages", "processing_time", "result_format", "stage", "status", "template_id", "template_name", "total_pages"]
+    __properties = ["base_credits", "category", "completed_at", "created_at", "credits_used", "deleted_at", "duration_seconds", "file_name", "id", "is_deleted", "model", "processed_pages", "processing_time", "result_format", "stage", "status", "surcharge_credits", "template_id", "template_name", "total_pages"]
 
     class Config:
         """Pydantic configuration"""
@@ -81,6 +84,7 @@ class JobsJobListItem(BaseModel):
             return JobsJobListItem.parse_obj(obj)
 
         _obj = JobsJobListItem.parse_obj({
+            "base_credits": obj.get("base_credits"),
             "category": obj.get("category"),
             "completed_at": obj.get("completed_at"),
             "created_at": obj.get("created_at"),
@@ -90,11 +94,13 @@ class JobsJobListItem(BaseModel):
             "file_name": obj.get("file_name"),
             "id": obj.get("id"),
             "is_deleted": obj.get("is_deleted"),
+            "model": obj.get("model"),
             "processed_pages": obj.get("processed_pages"),
             "processing_time": obj.get("processing_time"),
             "result_format": obj.get("result_format"),
             "stage": obj.get("stage"),
             "status": obj.get("status"),
+            "surcharge_credits": obj.get("surcharge_credits"),
             "template_id": obj.get("template_id"),
             "template_name": obj.get("template_name"),
             "total_pages": obj.get("total_pages")

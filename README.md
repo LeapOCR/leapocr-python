@@ -62,7 +62,13 @@ async def main():
 
         print(f"Credits used: {result.credits_used}")
         print(f"Pages processed: {len(result.pages)}")
-        print(f"Extracted text: {result.pages[0].text[:200]}...")
+
+        # Access extracted data (string for markdown, dict for structured)
+        first_page = result.pages[0].result
+        if isinstance(first_page, str):
+            print(f"Extracted text: {first_page[:200]}...")
+        else:
+            print(f"Extracted data: {first_page}")
 
         # Optional: Delete job after processing (auto-deleted after 7 days)
         await client.ocr.delete_job(job.job_id)
@@ -74,7 +80,8 @@ asyncio.run(main())
 
 - **Async-First Design** - Built on asyncio with httpx for high-performance concurrent processing
 - **Type-Safe API** - Full type hints and mypy strict mode support
-- **Multiple Processing Formats** - Structured data extraction, markdown output, or per-page processing
+- **Multiple Processing Formats** - Structured data extraction (dict), markdown output (string), or per-page processing
+- **Flexible Result Types** - Results are automatically typed: `str` for markdown, `dict` for structured data
 - **Flexible Model Selection** - Choose from standard, pro, or custom AI models
 - **Custom Schema Support** - Define extraction schemas for your specific use case
 - **Built-in Retry Logic** - Automatic exponential backoff for transient failures
@@ -119,8 +126,6 @@ async def process_url():
 
         # Wait for completion
         result = await client.ocr.wait_until_done(job.job_id)
-
-        print(f"Processing time: {result.processing_time_seconds:.2f}s")
         print(f"Credits used: {result.credits_used}")
         print(f"Pages: {len(result.pages)}")
 
@@ -149,7 +154,9 @@ async def process_file():
         result = await client.ocr.wait_until_done(job.job_id)
 
         for page in result.pages:
-            print(f"Page {page.page_number}: {len(page.text)} characters")
+            # result can be string (markdown) or dict (structured)
+            result_length = len(page.result) if isinstance(page.result, str) else len(str(page.result))
+            print(f"Page {page.page_number}: {result_length} characters")
 
         await client.ocr.delete_job(job.job_id)
 
@@ -192,9 +199,16 @@ async def extract_with_schema():
         # Wait for completion
         result = await client.ocr.wait_until_done(job.job_id)
 
-        # Parse the structured data
+        # Access the structured data
         import json
-        data = json.loads(result.pages[0].text)
+        page_result = result.pages[0].result
+
+        # Handle both dict (already parsed) and string (JSON)
+        if isinstance(page_result, dict):
+            data = page_result
+        else:
+            data = json.loads(page_result)
+
         print(f"Patient: {data['patient_name']}")
         print(f"Medications: {len(data['medications'])}")
 
@@ -205,11 +219,28 @@ asyncio.run(extract_with_schema())
 
 ### Output Formats
 
-| Format                       | Description        | Use Case                                       |
-| ---------------------------- | ------------------ | ---------------------------------------------- |
-| `Format.STRUCTURED`          | Single JSON object | Extract specific fields across entire document |
-| `Format.MARKDOWN`            | Text per page      | Convert document to readable text              |
-| `Format.PER_PAGE_STRUCTURED` | JSON per page      | Extract fields from multi-section documents    |
+| Format                       | Description        | Use Case                                       | Result Type |
+| ---------------------------- | ------------------ | ---------------------------------------------- | ----------- |
+| `Format.STRUCTURED`          | Single JSON object | Extract specific fields across entire document | `dict`      |
+| `Format.MARKDOWN`            | Text per page      | Convert document to readable text              | `str`       |
+| `Format.PER_PAGE_STRUCTURED` | JSON per page      | Extract fields from multi-section documents    | `dict`      |
+
+**Accessing Results:**
+
+The `result` field in `PageResult` can be either:
+- **String** (`str`) - for markdown format, contains the extracted text
+- **Dictionary** (`dict`) - for structured formats, contains the parsed JSON data
+
+```python
+# Handle both result types
+for page in result.pages:
+    if isinstance(page.result, dict):
+        # Structured data - already parsed
+        print(f"Invoice #: {page.result.get('invoice_number')}")
+    else:
+        # Markdown text
+        print(f"Text: {page.result[:100]}...")
+```
 
 ### Manual Job Management
 
@@ -285,7 +316,9 @@ async def use_template():
         )
 
         result = await client.ocr.wait_until_done(job.job_id)
-        print(f"Extracted data: {result.pages[0].text}")
+
+        # Access result (dict for structured templates, string for markdown)
+        print(f"Extracted data: {result.pages[0].result}")
 
         await client.ocr.delete_job(job.job_id)
 
@@ -314,7 +347,7 @@ async def delete_after_processing():
         result = await client.ocr.wait_until_done(job.job_id)
 
         # Use the extracted data
-        print(f"Extracted data: {result.pages[0].text}")
+        print(f"Extracted data: {result.pages[0].result}")
 
         # Delete job immediately (redacts content and marks as deleted)
         await client.ocr.delete_job(result.job_id)
@@ -539,6 +572,39 @@ class ClientConfig:
     retry_delay: float = 1.0
     retry_multiplier: float = 2.0
 ```
+
+#### `JobResult`
+
+```python
+@dataclass
+class JobResult:
+    job_id: str
+    status: JobStatusType
+    pages: list[PageResult]
+    file_name: str
+    total_pages: int
+    processed_pages: int
+    credits_used: int
+    model: str
+    result_format: str
+    completed_at: datetime
+    pagination: PaginationInfo | None = None
+```
+
+#### `PageResult`
+
+```python
+@dataclass
+class PageResult:
+    page_number: int
+    result: str | dict[str, Any]  # String for markdown, dict for structured
+    id: str | None = None
+```
+
+**Note**: The `result` field type depends on the format:
+- `Format.MARKDOWN` → `str` (plain text)
+- `Format.STRUCTURED` → `dict` (parsed JSON object)
+- `Format.PER_PAGE_STRUCTURED` → `dict` (parsed JSON object)
 
 ## Development
 

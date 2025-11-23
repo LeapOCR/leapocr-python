@@ -106,22 +106,11 @@ class JobStatus:
 
 
 @dataclass
-class PageMetadata:
-    """Metadata for a single page."""
-
-    processing_ms: int | None = None
-    retry_count: int | None = None
-    extra: dict[str, Any] = field(default_factory=dict)
-
-
-@dataclass
 class PageResult:
     """Result for a single page."""
 
     page_number: int
-    text: str
-    metadata: PageMetadata
-    processed_at: datetime
+    result: str | dict[str, Any]  # String for markdown, dict for structured
     id: str | None = None
 
 
@@ -145,7 +134,6 @@ class JobResult:
     file_name: str
     total_pages: int
     processed_pages: int
-    processing_time_seconds: float
     credits_used: int
     model: str
     result_format: str

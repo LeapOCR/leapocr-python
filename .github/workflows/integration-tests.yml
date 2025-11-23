@@ -1,14 +1,14 @@
 name: Integration Tests
 
 on:
-  workflow_dispatch:  # Manual trigger only
+  workflow_dispatch: # Manual trigger only
     inputs:
       api_base_url:
-        description: 'API Base URL'
+        description: "API Base URL"
         required: false
-        default: 'http://localhost:8080/api/v1'
+        default: "http://localhost:8443/api/v1"
   schedule:
-    - cron: '0 0 * * 0'  # Weekly on Sunday at midnight
+    - cron: "0 0 * * 0" # Weekly on Sunday at midnight
 
 jobs:
   integration-test:
@@ -22,7 +22,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
       - name: Install uv
         uses: astral-sh/setup-uv@v3
@@ -35,7 +35,7 @@ jobs:
       - name: Run integration tests
         env:
           LEAPOCR_API_KEY: ${{ secrets.LEAPOCR_API_KEY }}
-          OCR_BASE_URL: ${{ github.event.inputs.api_base_url || 'http://localhost:8080/api/v1' }}
+          OCR_BASE_URL: ${{ github.event.inputs.api_base_url || 'http://localhost:8443/api/v1' }}
         run: |
           uv run pytest tests/integration/ -v --tb=short -m integration
 

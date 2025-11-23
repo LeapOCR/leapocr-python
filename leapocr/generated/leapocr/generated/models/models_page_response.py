@@ -19,20 +19,17 @@ import re  # noqa: F401
 import json
 
 
-from typing import Optional
+from typing import Any, Optional
 from pydantic import BaseModel, StrictInt, StrictStr
-from leapocr.generated.models.models_page_metadata import ModelsPageMetadata
 
 class ModelsPageResponse(BaseModel):
     """
     ModelsPageResponse
     """
     id: Optional[StrictStr] = None
-    metadata: Optional[ModelsPageMetadata] = None
     page_number: Optional[StrictInt] = None
-    processed_at: Optional[StrictStr] = None
-    text: Optional[StrictStr] = None
-    __properties = ["id", "metadata", "page_number", "processed_at", "text"]
+    result: Optional[Any] = None
+    __properties = ["id", "page_number", "result"]
 
     class Config:
         """Pydantic configuration"""
@@ -58,9 +55,11 @@ class ModelsPageResponse(BaseModel):
                           exclude={
                           },
                           exclude_none=True)
-        # override the default output from pydantic by calling `to_dict()` of metadata
-        if self.metadata:
-            _dict['metadata'] = self.metadata.to_dict()
+        # set to None if result (nullable) is None
+        # and __fields_set__ contains the field
+        if self.result is None and "result" in self.__fields_set__:
+            _dict['result'] = None
+
         return _dict
 
     @classmethod
@@ -74,9 +73,7 @@ class ModelsPageResponse(BaseModel):
 
         _obj = ModelsPageResponse.parse_obj({
             "id": obj.get("id"),
-            "metadata": ModelsPageMetadata.from_dict(obj.get("metadata")) if obj.get("metadata") is not None else None,
             "page_number": obj.get("page_number"),
-            "processed_at": obj.get("processed_at"),
-            "text": obj.get("text")
+            "result": obj.get("result")
         })
         return _obj

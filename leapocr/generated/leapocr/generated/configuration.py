@@ -402,7 +402,7 @@ conf = leapocr.generated.Configuration(
                "OS: {env}\n"\
                "Python Version: {pyversion}\n"\
                "Version of the API: v1\n"\
-               "SDK Package Version: 0.1.0".\
+               "SDK Package Version: 0.0.3".\
                format(env=sys.platform, pyversion=sys.version)
 
     def get_host_settings(self):
@@ -416,7 +416,7 @@ conf = leapocr.generated.Configuration(
                 'description': "No description provided",
             },
             {
-                'url': "http://localhost:8080/api/v1",
+                'url': "http://localhost:8443/api/v1",
                 'description': "Local development server",
             },
             {
