@@ -1,3 +1,9 @@
+## [0.0.4] - ${DATE}
+
+- chore: update CHANGELOG.md for v0.0.3 (42c9db5)
+- Update local development server URL and enhance README documentation (69a9b92)
+- Release version 0.0.4 (532d34e)
+
 ## [0.0.4] - 2025-01-23
 
 ### Breaking Changes
