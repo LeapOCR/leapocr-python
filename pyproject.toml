@@ -1,6 +1,6 @@
 [project]
 name = "leapocr"
-version = "0.0.3"
+version = "0.0.4"
 description = "Official Python SDK for LeapOCR - Transform documents into structured data using AI-powered OCR"
 readme = "README.md"
 requires-python = ">=3.9"

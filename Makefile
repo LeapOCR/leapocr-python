@@ -67,7 +67,7 @@ generate: fetch-spec
 		--additional-properties=\
 packageName=leapocr.generated,\
 projectName=leapocr-generated,\
-packageVersion=0.0.3,\
+packageVersion=0.0.4,\
 library=asyncio,\
 useOneOfDiscriminatorLookup=true,\
 generateSourceCodeOnly=true \

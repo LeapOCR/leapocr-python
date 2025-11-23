@@ -1,4 +1,52 @@
-## [0.0.3] - ${DATE}
+## [0.0.4] - 2025-01-23
+
+### Breaking Changes
+- **Updated result endpoint structure** - `PageResult.text` field replaced with `PageResult.result`
+- **Removed fields** - `processing_time_seconds` and `PageMetadata` removed from API responses
+- The `result` field now contains either:
+  - `str` - for markdown format (plain text)
+  - `dict` - for structured formats (parsed JSON object)
+
+### Changed
+- **API Response Structure**:
+  - `PageResult.text` → `PageResult.result` (supports both string and dict types)
+  - Removed `PageResult.metadata`, `processed_at` fields
+  - Removed `JobResult.processing_time_seconds` field
+  - Result endpoint now returns `result` instead of `text` for each page
+
+- **Updated Models**:
+  - Regenerated SDK from latest OpenAPI specification
+  - `ModelsPageResponse` now has `result: Optional[Any]` field
+  - `ModelsOCRResultResponse` includes updated field set
+
+### Documentation
+- Updated README with comprehensive `result` field documentation
+- Added result type table showing `dict` vs `str` for each format
+- Updated all examples to use `page.result` instead of `page.text`
+- Added examples showing proper handling of both string and dict result types
+- Removed references to deprecated fields in all examples
+
+### Migration Guide
+```python
+# Before (v0.0.3)
+for page in result.pages:
+    text = page.text
+    processing_time = page.metadata.processing_ms
+
+total_time = result.processing_time_seconds
+
+# After (v0.0.4)
+for page in result.pages:
+    # Handle both string (markdown) and dict (structured)
+    if isinstance(page.result, str):
+        text = page.result  # Markdown text
+    else:
+        data = page.result  # Structured data dict
+
+# processing_time_seconds and metadata fields removed
+```
+
+## [0.0.3] - 2025-11-11
 
 - chore: update CHANGELOG.md for v0.0.2 (c936efc)
 - Update LICENSE and README to reflect Apache 2.0 license (5f5a20b)
@@ -121,6 +169,8 @@ result = await client.ocr.wait_until_done(job.job_id)
 - Error handling strategies
 - Timeout handling
 
-[Unreleased]: https://github.com/leapocr/leapocr-python/compare/v0.0.2...HEAD
+[Unreleased]: https://github.com/leapocr/leapocr-python/compare/v0.0.4...HEAD
+[0.0.4]: https://github.com/leapocr/leapocr-python/compare/v0.0.3...v0.0.4
+[0.0.3]: https://github.com/leapocr/leapocr-python/compare/v0.0.2...v0.0.3
 [0.0.2]: https://github.com/leapocr/leapocr-python/compare/v0.0.1...v0.0.2
 [0.0.1]: https://github.com/leapocr/leapocr-python/releases/tag/v0.0.1
